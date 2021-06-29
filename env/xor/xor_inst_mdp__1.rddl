@@ -1,0 +1,11 @@
+instance xor_inst_mdp__1 {
+	domain = xor_mdp;
+	init-state {
+		code0 = true;
+		code1 = true;
+	};
+
+	max-nondef-actions = 1;
+	horizon  = 40;
+	discount = 1.0;
+}

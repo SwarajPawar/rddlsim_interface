@@ -1,0 +1,27 @@
+domain xor_mdp {
+
+	pvariables {
+		PENALTY_XOR : {non-fluent, real, default = -100};
+
+		code0 : {state-fluent, bool, default = false};
+		code1 : {state-fluent, bool, default = false};
+
+		detect-xor : { action-fluent, bool, default = false };
+	};
+
+	cpfs {
+  	code0' = Bernoulli(0.5);
+ 	  code1' = Bernoulli(0.5);
+	};
+
+	reward = [if ((detect-xor ^ ~((code0 + code1) == 1)) | (~detect-xor ^ ((code0+code1)==1)))
+							then PENALTY_XOR
+						else
+							0];
+
+//	reward = [if (detect-xor == code0)
+//							then 0
+//						else
+//							PENALTY_XOR];
+
+}
