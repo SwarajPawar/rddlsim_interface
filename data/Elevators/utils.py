@@ -35,7 +35,6 @@ import numpy as np
 
 	Actions:
 
-	0: Left
 	1: Open_Door_Going_Up
 	2: Open_Door_Going_Down
 	3: Move_Cur_Dir
@@ -64,20 +63,24 @@ class Elevators:
 		self.info_set_size = 5
 
 
-	def reset():
+	def reset(self):
 		self.actions = [np.nan for i in range(self.decisions)]
 		self.cur_action = 0
+		return self.get_sequence()
 
 
-	def get_complete_sequence(action):
+	def next_complete_sequence(self, action):
 
-		self.action[self.cur_action] = action
+		self.actions[self.cur_action] = action
 
 		self.cur_action += 1
 
+		return self.get_sequence()
+
+	def get_sequence(self):
 		sequence = list()
 		for i in range(self.decisions):
-			sequence += [np.nan]*self.info_set_size + self.actions[i]
+			sequence += [np.nan]*self.info_set_size + [self.actions[i]]
 
 		sequence += [np.nan]*(self.info_set_size + 1)
 

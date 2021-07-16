@@ -1,0 +1,13 @@
+numpy
+matplotlib==2.0.1
+jupyter
+	Average Reward : -6.0
+	Reward Deviation : 0.0
+	Average Reward : -6.0
+	Reward Deviation : 0.0
+	Average Reward : -3.6100000000000003
+	Reward Deviation : 3.1304791965448358
+	Average Reward : -6.015
+	Reward Deviation : 2.6918441633943075
+	Average Reward : -5.26
+	Reward Deviation : 1.8615584868598674

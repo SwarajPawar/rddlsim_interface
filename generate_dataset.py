@@ -10,12 +10,16 @@ global env
 
 
 
+dataset = 'Navigation'
+instances = 500000
+steps = 5
+n_actions = 4
+'''
 dataset = 'Elevators'
 instances = 500000
 steps = 6
-
-
-
+n_actions = 4
+'''
 
 
 env = get_env(dataset)
@@ -50,7 +54,7 @@ def cb_train():
 
 		for j in range(steps):
 			
-			action = random.randint(1,4)
+			action = random.randint(1,n_actions)
 			state, reward, done, _ = env.doAction(action)
 			total_reward += reward
 			
