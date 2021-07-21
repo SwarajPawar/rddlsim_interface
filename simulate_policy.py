@@ -86,6 +86,9 @@ def cb_train():
 	optimal_meu = get_optimal_meu(dataset)
 	random_policy_reward = get_random_policy_reward(dataset)
 
+	all_avg_rewards = []
+	all_reward_dev = []
+
 
 	for model in range(models):
 		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
@@ -116,38 +119,42 @@ def cb_train():
 		avg_rewards = np.mean(reward_batch)
 		reward_dev = np.std(reward_batch)
 
-		print(f"\n\nModel {model}")
+		all_avg_rewards.append(avg_rewards)
+		all_reward_dev.append(reward_dev)
+
+		print(f"\n\nModel {model+1}")
 		print(f"\tAverage Reward : {avg_rewards}")
 		print(f"\tReward Deviation : {reward_dev}")
 
 
 		#Save the reward stats
-		f = open(f"{path}/{dataset}/stats.txt", "a")
-		f.write(f"\n\tAverage Reward : {avg_rewards}")
-		f.write(f"\n\tReward Deviation : {reward_dev}")
+		f = open(f"{path}/{dataset}/stats.txt", "w")
+		f.write(f"\n\tAverage Reward : {all_avg_rewards}")
+		f.write(f"\n\tReward Deviation : {all_reward_dev}")
 		f.close()
 
 		#Plot the reward
+                '''
 		plt.close()
 
-		rand_reward = np.array([random_policy_reward["reward"]]*len(avg_rewards))
-		dev = np.array([random_policy_reward["dev"]]*len(avg_rewards))
-		plt.fill_between(np.arange(len(avg_rewards)), rand_reward-dev, rand_reward+dev, alpha=0.1, color="lightgrey")
+		rand_reward = np.array([random_policy_reward["reward"]]*len(all_avg_rewards))
+		dev = np.array([random_policy_reward["dev"]]*len(all_avg_rewards))
+		plt.fill_between(np.arange(len(all_avg_rewards)), rand_reward-dev, rand_reward+dev, alpha=0.1, color="lightgrey")
 		plt.plot(rand_reward, linestyle="dashed", color ="grey", label="Random Policy")
 
 		
-		#original_reward = np.array([original_stats["reward"]]*len(avg_rewards))
-		#dev = np.array([original_stats["dev"]]*len(avg_rewards))
-		#plt.fill_between(np.arange(len(avg_rewards)), original_reward-dev, original_reward+dev, alpha=0.3, color="red")
-		plt.plot([optimal_meu]*len(avg_rewards), linewidth=3, color ="lime", label="Optimal MEU")
+		#original_reward = np.array([original_stats["reward"]]*len(all_avg_rewards))
+		#dev = np.array([original_stats["dev"]]*len(all_avg_rewards))
+		#plt.fill_between(np.arange(len(all_avg_rewards)), original_reward-dev, original_reward+dev, alpha=0.3, color="red")
+		plt.plot([optimal_meu]*len(all_avg_rewards), linewidth=3, color ="lime", label="Optimal MEU")
 		#plt.plot(original_reward, linestyle="dashed", color ="red", label="LearnSPMN")
 		
-		plt.errorbar(np.arange(len(avg_rewards)), avg_rewards, yerr=reward_dev, marker="o", label="Anytime")
+		plt.errorbar(np.arange(len(all_avg_rewards)), all_avg_rewards, yerr=all_reward_dev, marker="o", label="Anytime")
 		plt.title(f"{dataset} Average Rewards")
 		plt.legend()
-		plt.savefig(f"{plot_path}/rewards.png", dpi=100)
+		plt.savefig(f"{path}/{dataset}/rewards.png", dpi=100)
 		plt.close()
-		
+		'''
 	
 
 
