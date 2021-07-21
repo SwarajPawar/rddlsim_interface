@@ -134,7 +134,7 @@ def cb_train():
 		f.close()
 
 		#Plot the reward
-                '''
+		'''
 		plt.close()
 
 		rand_reward = np.array([random_policy_reward["reward"]]*len(all_avg_rewards))
@@ -160,15 +160,15 @@ def cb_train():
 
 
 def cb_test(state):
-    exit(1)
-    
-    global env
-    state = npct.as_array(state, (env.num_state_vars,))
-    print("\n\nstate:\t"+str(state)+"\n\n")
-    action = np.random.randint(5)
-    print("action:\t"+str(action))
-    return action
-    
+	exit(1)
+	
+	global env
+	state = npct.as_array(state, (env.num_state_vars,))
+	print("\n\nstate:\t"+str(state)+"\n\n")
+	action = np.random.randint(5)
+	print("action:\t"+str(action))
+	return action
+	
 
 env.connectToServer("localhost", 2323, cb_train, cb_test)
 
