@@ -97,7 +97,7 @@ def cb_train():
 	total_reward = 0
 	reward_batch = list()
 
-	#pool = multiprocessing.Pool()
+	pool = multiprocessing.Pool()
 
 	#Get the rewards parallely for each batch
 	intervals = int(batch_size/interval_size)
