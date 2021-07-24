@@ -28,7 +28,7 @@ interval_size = 250
 
 dataset = 'Navigation'
 steps = 5
-models = 11
+models = 1
 batches = 10
 batch_size = 1000
 interval_size = 250
@@ -79,8 +79,7 @@ def cb_train():
 			print ("Creation of the directory %s failed" % f"{path}/{dataset}")
 			sys.exit()
 
-	f = open(f"{path}/{dataset}/stats.txt", "w")
-	f.close()
+	
 
 	#Get Baseline stats
 	#original_stats = get_original_stats(dataset)
@@ -92,7 +91,7 @@ def cb_train():
 
 
 	for model in range(models):
-		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
+		file = open(f"models/{dataset}/spmn_original.pkle","rb")
 		spmn = pickle.load(file)
 		file.close()
 
@@ -129,7 +128,7 @@ def cb_train():
 
 
 		#Save the reward stats
-		f = open(f"{path}/{dataset}/stats.txt", "w")
+		f = open(f"{path}/{dataset}/stats_original.txt", "w")
 		f.write(f"\n\tAverage Reward : {all_avg_rewards}")
 		f.write(f"\n\tReward Deviation : {all_reward_dev}")
 		f.close()
