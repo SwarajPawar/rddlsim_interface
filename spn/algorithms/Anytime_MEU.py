@@ -1,7 +1,3 @@
-"""
-Created on March 28, 2019
-@author: Hari Teja Tatavarti
-"""
 import logging
 
 from spn.algorithms.MPE import get_node_funtions
@@ -14,6 +10,7 @@ import numpy as np
 
 from spn.algorithms.Inference import interface_switch_log_likelihood
 from spn.structure.Base import InterfaceSwitch
+import random
 
 
 def meu_sum(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
@@ -44,17 +41,29 @@ def meu_prod(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
 def meu_max(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
     meu_children = meu_per_node[:, [child.id for child in node.children]]
     decision_value_given = data[:, node.dec_idx]
-    max_value = node.dec_values[np.argmax(meu_children, axis=1)]
+
+    argid = np.argmax(meu_children, axis=1)
+    if type(argid) != int:
+        argid = argid[0]
+    max_value = node.dec_values[argid]
+    if type(max_value) == list:
+        max_value = random.choice(max_value)
+        
     # if data contains a decision value use that otherwise use max
-    # if not np.isnan(decision_value_given) and list(decision_value_given) not in node.dec_values:
-    #     meu_per_node[:, node.id] = np.nan
-    # else:
-    dec_value = np.select([np.isnan(decision_value_given), True],
-                          [max_value, decision_value_given]).astype(int)
-    dec_value_to_child_id = lambda val: node.children[list(node.dec_values).index(val)].id
-    dec_value_to_child_id = np.vectorize(dec_value_to_child_id)
-    child_id = dec_value_to_child_id(dec_value)
-    meu_per_node[:,node.id] = meu_per_node[np.arange(meu_per_node.shape[0]),child_id]
+    if not np.isnan(decision_value_given) and all(decision_value_given not in dec_value_groups for dec_value_groups in node.dec_values):
+        meu_per_node[:, node.id] = np.nan
+    else:
+    
+        dec_value = np.select([np.isnan(decision_value_given), True],
+                              [max_value, decision_value_given]).astype(int)
+        for idx, dec_value_group in enumerate(list(node.dec_values)):
+            if dec_value in dec_value_group:
+                dec_idx = idx
+        #dec_value_to_child_id = lambda val: node.children[list(node.dec_values).index(val)].id
+        #dec_value_to_child_id = np.vectorize(dec_value_to_child_id)
+        #child_id = dec_value_to_child_id(dec_value)
+        child_id = node.children[dec_idx].id
+        meu_per_node[:,node.id] = meu_per_node[np.arange(meu_per_node.shape[0]),child_id]
 
 
 def meu_util(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
@@ -225,25 +234,27 @@ def best_next_decision(root, input_data, in_place=False):
     for node in nodes:
         if type(node) == Max:
             if node.dec_idx in dec_dict:
-                    dec_dict[node.dec_idx].union(set(node.dec_values))
+                    dec_dict[node.dec_idx] = dec_dict[node.dec_idx].union(set([tuple(dec_value) for dec_value in node.dec_values]))
             else:
-                dec_dict[node.dec_idx] = set(node.dec_values)
+                dec_dict[node.dec_idx] = set([tuple(dec_value) for dec_value in node.dec_values])
     next_dec_idx = None
     # find next undefined decision
     for idx in dec_dict.keys():
         if np.all(np.isnan(data[:, idx])):
             next_dec_idx = idx
             break
+    
     assert next_dec_idx is not None, "please assign all values of next decision to np.nan"
     # determine best decisions based on meu
     dec_vals = list(dec_dict[next_dec_idx])
-    best_decisions = np.full((1,data.shape[0]),dec_vals[0])
+    best_decisions = np.full((1,data.shape[0]), random.choice(dec_vals[0]))
     data[:,next_dec_idx] = best_decisions
     meu_best = meu(root, data)
     for i in range(1, len(dec_vals)):
-        decisions_i = np.full((1,data.shape[0]), dec_vals[i])
+        decisions_i = np.full((1,data.shape[0]), random.choice(dec_vals[i]))
         data[:,next_dec_idx] = decisions_i
         meu_i = meu(root, data)
         best_decisions = np.select([np.greater(meu_i, meu_best),True],[decisions_i, best_decisions])
         meu_best = np.maximum(meu_i,meu_best)
     return best_decisions
+
