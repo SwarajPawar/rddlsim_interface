@@ -54,7 +54,7 @@ def meu_max(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
     dec_value_to_child_id = lambda val: node.children[list(node.dec_values).index(val)].id
     dec_value_to_child_id = np.vectorize(dec_value_to_child_id)
     print(node.dec_values)
-    print(dec_val)
+    print(dec_value)
     child_id = dec_value_to_child_id(dec_value)
     meu_per_node[:,node.id] = meu_per_node[np.arange(meu_per_node.shape[0]),child_id]
 
