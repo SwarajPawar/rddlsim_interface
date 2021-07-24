@@ -106,6 +106,7 @@ def cb_train():
 		for y in range(intervals):
 			reward_slice = list()
 			spmns = [spmn for z in range(interval_size)]
+			print(spmns)
 			reward_slice = pool.map(get_reward, spmns)
 			rewards += reward_slice
 			printProgressBar(x*intervals + y+1, batches*intervals, prefix = f'Average Reward Evaluation :', suffix = 'Complete', length = 50)
