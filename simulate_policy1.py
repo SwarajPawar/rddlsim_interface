@@ -18,10 +18,11 @@ global env
 
 '''
 dataset = 'Elevators'
-steps = 6
+steps = 5
 models = 5
 batches = 10
-batch_size = 5000
+batch_size = 1000
+interval_size = 250
 '''
 
 
@@ -30,10 +31,7 @@ steps = 5
 batches = 10
 batch_size = 1000
 interval_size = 250
-'''
-batch_size = 500
-interval_size = 50
-'''
+
 
 path = 'output'
 
@@ -41,28 +39,22 @@ path = 'output'
 
 env = get_env(dataset)
 sequence_for_policy = get_sequence_for_policy(dataset)
-get_state = get_state_for_dataset(dataset)
 
 # Get reward by simulating policy in the environment
 def get_reward(spmn):
 
 	global env
 
-	#actions = [1,3,3,4,4]
-
 	state = env.reset()
 	complete_sequence = sequence_for_policy.reset()
 	total_reward = 0
-	i = 0
 	for i in range(steps):
-		#print(get_state(state))
-		#action = actions[i]
 		output = best_next_decision(spmn, complete_sequence)
 		action = int(output[0][0])
 		state, reward, done, _ = env.doAction(action)
-		#print(reward)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)
+
 	return total_reward
 
 
@@ -87,7 +79,7 @@ def cb_train():
 
 	
 
-
+	
 	file = open(f"models/{dataset}/spmn_original.pkle","rb")
 	spmn = pickle.load(file)
 	file.close()
@@ -103,13 +95,9 @@ def cb_train():
 	intervals = int(batch_size/interval_size)
 	for x in range(batches):
 		rewards = list()
-		for y in range(intervals):
-			reward_slice = list()
-			spmns = [spmn for z in range(interval_size)]
-			print(spmns)
-			reward_slice = pool.map(get_reward, spmns)
-			rewards += reward_slice
-			printProgressBar(x*intervals + y+1, batches*intervals, prefix = f'Average Reward Evaluation :', suffix = 'Complete', length = 50)
+		for y in range(batch_size):
+			rewards.append(get_reward(spmn))
+			printProgressBar(x*batch_size + y+1, batches*batch_size, prefix = f'Average Reward Evaluation :', suffix = 'Complete', length = 50)
 		reward_batch.append(sum(rewards) / batch_size)
 		
 
@@ -117,7 +105,8 @@ def cb_train():
 	avg_rewards = np.mean(reward_batch)
 	reward_dev = np.std(reward_batch)
 
-	print(f"\n\nModel {model}")
+
+	print(f"\n\nModel LearnSPMN")
 	print(f"\tAverage Reward : {avg_rewards}")
 	print(f"\tReward Deviation : {reward_dev}")
 
@@ -128,22 +117,22 @@ def cb_train():
 	f.write(f"\n\tReward Deviation : {reward_dev}")
 	f.close()
 
-	
-	
+		
 	
 
 
 
 def cb_test(state):
-    exit(1)
-    
-    global env
-    state = npct.as_array(state, (env.num_state_vars,))
-    print("\n\nstate:\t"+str(state)+"\n\n")
-    action = np.random.randint(5)
-    print("action:\t"+str(action))
-    return action
-    
+	exit(1)
+	
+	global env
+	state = npct.as_array(state, (env.num_state_vars,))
+	print("\n\nstate:\t"+str(state)+"\n\n")
+	action = np.random.randint(5)
+	print("action:\t"+str(action))
+	return action
+	
 
 env.connectToServer("localhost", 2323, cb_train, cb_test)
+
 
