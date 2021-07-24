@@ -9,7 +9,7 @@ from data.utils import *
 global env
 
 
-
+'''
 dataset = 'Navigation'
 instances = 500000
 steps = 5
@@ -17,9 +17,8 @@ n_actions = 4
 '''
 dataset = 'Elevators'
 instances = 500000
-steps = 6
+steps = 5
 n_actions = 4
-'''
 
 
 env = get_env(dataset)

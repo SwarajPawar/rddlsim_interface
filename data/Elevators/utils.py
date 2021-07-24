@@ -11,7 +11,7 @@ import numpy as np
 	State:
 
 	Elevator_at_Floor
-	0, 1, 2, 3
+	0, 1, 2
 
 	Person_Waiting: 
 	0: No

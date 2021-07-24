@@ -18,10 +18,11 @@ global env
 
 '''
 dataset = 'Elevators'
-steps = 6
+steps = 5
 models = 5
 batches = 10
-batch_size = 5000
+batch_size = 1000
+interval_size = 250
 '''
 
 
@@ -172,5 +173,4 @@ def cb_test(state):
 
 env.connectToServer("localhost", 2323, cb_train, cb_test)
 
-#-7.8615
-#-7.3568
+
