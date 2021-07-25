@@ -62,6 +62,7 @@ def cb_train():
 			state, reward, done, _ = env.doAction(action)
 			total_reward += reward
 			print(convert_state(state))
+			print(reward)
 			instance += [action] + convert_state(state)
 
 		instance += [total_reward]
