@@ -16,8 +16,8 @@ steps = 5
 n_actions = 4
 '''
 dataset = 'Elevators'
-instances = 50
-steps = 5
+instances = 500000
+steps = 6
 n_actions = 4
 
 
@@ -49,20 +49,13 @@ def cb_train():
 		instance = [i+1]
 
 		instance += state
-		print("\n\n")
-		print(state)
 		total_reward = 0
-		actions = [3,1,4,3,2]
+		#actions = [3,1,4,3,2]
 		for j in range(steps):
 			
-			if i<25000:
-				action = actions[j]
-			else:
-				action = random.randint(1,n_actions)
+			action = random.randint(1,n_actions)
 			state, reward, done, _ = env.doAction(action)
 			total_reward += reward
-			print(convert_state(state))
-			print(reward)
 			instance += [action] + convert_state(state)
 
 		instance += [total_reward]
