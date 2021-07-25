@@ -50,10 +50,13 @@ def cb_train():
 
 		instance += state
 		total_reward = 0
-
+		actions = [3,1,4,3,2]
 		for j in range(steps):
 			
-			action = random.randint(1,n_actions)
+			if i>25000:
+				action = actions[j]
+			else:
+				action = random.randint(1,n_actions)
 			state, reward, done, _ = env.doAction(action)
 			total_reward += reward
 			
