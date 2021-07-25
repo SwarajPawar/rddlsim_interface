@@ -59,7 +59,7 @@ def convert_state_variables_Elevators(state):
 class Elevators:
 
 	def __init__(self):
-		self.decisions = 5
+		self.decisions = 6
 		self.info_set_size = 5
 
 
