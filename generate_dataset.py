@@ -16,7 +16,7 @@ steps = 5
 n_actions = 4
 '''
 dataset = 'Elevators'
-instances = 500000
+instances = 50
 steps = 5
 n_actions = 4
 
@@ -54,7 +54,7 @@ def cb_train():
 		actions = [3,1,4,3,2]
 		for j in range(steps):
 			
-			if i>25000:
+			if i<25000:
 				action = actions[j]
 			else:
 				action = random.randint(1,n_actions)
