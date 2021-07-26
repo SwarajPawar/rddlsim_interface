@@ -20,9 +20,9 @@ global env
 dataset = 'Elevators'
 steps = 6
 models = 1
-batches = 15
+batches = 25
 batch_size = 20000
-interval_size = 5000
+interval_size = 10000
 '''
 
 
