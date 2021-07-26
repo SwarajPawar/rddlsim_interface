@@ -16,13 +16,13 @@ import sys, os
 global env
 
 
-'''
+
 dataset = 'Elevators'
-steps = 5
-models = 5
-batches = 10
-batch_size = 1000
-interval_size = 250
+steps = 6
+models = 1
+batches = 15
+batch_size = 20000
+interval_size = 5000
 '''
 
 
@@ -32,7 +32,7 @@ models = 1
 batches = 10
 batch_size = 1000
 interval_size = 250
-
+'''
 
 path = 'output'
 
@@ -51,8 +51,9 @@ def get_reward(spmn):
 	#print(complete_sequence)
 	total_reward = 0
 	for i in range(steps):
-		output = best_next_decision(spmn, complete_sequence)
-		action = int(output[0][0])
+		#output = best_next_decision(spmn, complete_sequence)
+		#action = int(output[0][0])
+		action = random.randint(1,4)
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)
@@ -91,7 +92,7 @@ def cb_train():
 
 
 	for model in range(models):
-		file = open(f"models/{dataset}/spmn_original.pkle","rb")
+		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
 		spmn = pickle.load(file)
 		file.close()
 
@@ -128,7 +129,7 @@ def cb_train():
 
 
 		#Save the reward stats
-		f = open(f"{path}/{dataset}/stats_original.txt", "w")
+		f = open(f"{path}/{dataset}/stats.txt", "w")
 		f.write(f"\n\tAverage Reward : {all_avg_rewards}")
 		f.write(f"\n\tReward Deviation : {all_reward_dev}")
 		f.close()
