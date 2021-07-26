@@ -84,8 +84,9 @@ def cb_train():
 
 	#Get Baseline stats
 	#original_stats = get_original_stats(dataset)
-	optimal_meu = get_optimal_meu(dataset)
-	random_policy_reward = get_random_policy_reward(dataset)
+	
+	#optimal_meu = get_optimal_meu(dataset)
+	#random_policy_reward = get_random_policy_reward(dataset)
 
 	all_avg_rewards = []
 	all_reward_dev = []
