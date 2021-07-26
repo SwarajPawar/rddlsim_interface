@@ -127,13 +127,13 @@ def cb_train():
 		print(f"\tAverage Reward : {avg_rewards}")
 		print(f"\tReward Deviation : {reward_dev}")
 
-
+		'''
 		#Save the reward stats
 		f = open(f"{path}/{dataset}/stats.txt", "w")
 		f.write(f"\n\tAverage Reward : {all_avg_rewards}")
 		f.write(f"\n\tReward Deviation : {all_reward_dev}")
 		f.close()
-
+		'''
 		#Plot the reward
 		'''
 		plt.close()
