@@ -19,10 +19,10 @@ global env
 
 dataset = 'Elevators'
 steps = 6
-models = 1
-batches = 1
-batch_size = 500000
-interval_size = 25000
+models = 11
+batches = 10
+batch_size = 1000
+interval_size = 250
 '''
 
 
@@ -50,11 +50,11 @@ def get_reward(spmn):
 	complete_sequence = sequence_for_policy.reset()
 	#print(complete_sequence)
 	total_reward = 0
-	actions = [3,1,4,3,2,4]
+	#actions = [3,1,4,3,2,4]
 	for i in range(steps):
-		#output = best_next_decision(spmn, complete_sequence)
-		#action = int(output[0][0])
-		action = actions[i]
+		output = best_next_decision(spmn, complete_sequence)
+		action = int(output[0][0])
+		#action = actions[i]
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)
@@ -129,13 +129,13 @@ def cb_train():
 		print(f"\tAverage Reward : {avg_rewards}")
 		print(f"\tReward Deviation : {reward_dev}")
 
-		'''
+		
 		#Save the reward stats
 		f = open(f"{path}/{dataset}/stats.txt", "w")
 		f.write(f"\n\tAverage Reward : {all_avg_rewards}")
 		f.write(f"\n\tReward Deviation : {all_reward_dev}")
 		f.close()
-		'''
+		
 		#Plot the reward
 		'''
 		plt.close()
