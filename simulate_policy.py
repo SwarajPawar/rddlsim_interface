@@ -5,7 +5,7 @@ import pickle
 import random
 from data.metaData import get_feature_names
 from data.utils import *
-from spn.algorithms.MEU import best_next_decision
+from spn.algorithms.Anytime_MEU import best_next_decision
 from spn.io.ProgressBar import printProgressBar
 from spn.data.domain_stats import get_original_stats, get_optimal_meu, get_random_policy_reward
 import matplotlib.pyplot as plt
