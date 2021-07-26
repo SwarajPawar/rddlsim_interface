@@ -20,9 +20,9 @@ global env
 dataset = 'Elevators'
 steps = 6
 models = 1
-batches = 25
-batch_size = 20000
-interval_size = 10000
+batches = 1
+batch_size = 500000
+interval_size = 25000
 '''
 
 
@@ -50,10 +50,11 @@ def get_reward(spmn):
 	complete_sequence = sequence_for_policy.reset()
 	#print(complete_sequence)
 	total_reward = 0
+	actions = [3,1,4,3,2,4]
 	for i in range(steps):
 		#output = best_next_decision(spmn, complete_sequence)
 		#action = int(output[0][0])
-		action = random.randint(1,4)
+		action = actions[i]
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)
