@@ -16,22 +16,21 @@ import sys, os
 global env
 
 
-'''
+
 dataset = 'Elevators'
-steps = 5
-models = 5
+steps = 6
+models = 1
 batches = 10
 batch_size = 1000
 interval_size = 250
+
 '''
-
-
 dataset = 'Navigation'
 steps = 5
 batches = 10
 batch_size = 1000
 interval_size = 250
-
+'''
 
 path = 'output'
 
