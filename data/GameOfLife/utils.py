@@ -11,8 +11,8 @@ import numpy as np
 	State:
 
 	Cell Locations
-	| 1 | 2 | 3 |
-	| 4 | 5 | 6 |
+	| 1 | 3 | 5 |
+	| 2 | 4 | 6 |
 	
 	0: Dead
 	1: Alive
@@ -40,11 +40,11 @@ def convert_state_variables_GameOfLife(state):
 
 
 	Cell_1 = state[0]
-	Cell_2 = state[2]
-	Cell_3 = state[4]
-	Cell_4 = state[5]
-	Cell_5 = state[1]
-	Cell_6 = state[3]
+	Cell_2 = state[1]
+	Cell_3 = state[2]
+	Cell_4 = state[3]
+	Cell_5 = state[4]
+	Cell_6 = state[5]
 
 	cells = [Cell_1, Cell_2, Cell_3, Cell_4, Cell_5, Cell_6]
 	return cells
