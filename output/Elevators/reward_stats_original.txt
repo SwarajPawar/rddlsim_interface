@@ -1,0 +1,3 @@
+
+	Average Reward : 0.5
+	Reward Deviation : 0.0

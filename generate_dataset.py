@@ -19,12 +19,18 @@ dataset = 'Elevators'
 instances = 500000
 steps = 6
 n_actions = 4
-'''
+
 
 dataset = 'GameOfLife'
 instances = 500000
-steps = 5
-n_actions = 6
+steps = 3
+n_actions = 9
+'''
+
+dataset = 'SysAdmin'
+instances = 500000
+steps = 4
+n_actions = 5
 
 env = get_env(dataset)
 convert_state = get_state_for_dataset(dataset)
