@@ -34,9 +34,9 @@ interval_size = 5000
 
 dataset = 'Navigation'
 steps = 5
-batches = 1
-batch_size = 500000
-interval_size = 5000
+batches = 5
+batch_size = 500
+interval_size = 250
 
 '''
 dataset = 'GameOfLife'
@@ -67,10 +67,10 @@ def get_reward(spmn):
 	state = env.reset()
 	complete_sequence = sequence_for_policy.reset()
 	total_reward = 0
-	actions = [1,3,3,4,4]
+	#actions = [1,3,3,4,4]
 	for i in range(steps):
-		#output = best_next_decision(spmn, complete_sequence)
-		action = actions[i] #int(output[0][0])
+		output = best_next_decision(spmn, complete_sequence)
+		action = int(output[0][0])
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)
@@ -99,11 +99,11 @@ def cb_train():
 
 	
 
-	'''
+	
 	file = open(f"models/{dataset}/spmn_original.pkle","rb")
 	spmn = pickle.load(file)
 	file.close()
-	'''
+	
 
 	#Initialize parameters for computing rewards
 	total_reward = 0
@@ -117,8 +117,8 @@ def cb_train():
 		rewards = list()
 		for y in range(intervals):
 			reward_slice = list()
-			#spmns = [spmn for z in range(interval_size)]
-			spmns = [z for z in range(interval_size)]
+			spmns = [spmn for z in range(interval_size)]
+			#spmns = [z for z in range(interval_size)]
 			reward_slice = pool.map(get_reward, spmns)
 			rewards += reward_slice
 			printProgressBar(x*intervals + y+1, batches*intervals, prefix = f'Average Reward Evaluation :', suffix = 'Complete', length = 50)
@@ -135,13 +135,13 @@ def cb_train():
 	print(f"\tAverage Reward : {avg_rewards}")
 	print(f"\tReward Deviation : {reward_dev}")
 
-	'''
+	
 	#Save the reward stats
 	f = open(f"{path}/{dataset}/stats_original.txt", "w")
 	f.write(f"\n\tAverage Reward : {avg_rewards}")
 	f.write(f"\n\tReward Deviation : {reward_dev}")
 	f.close()
-	'''
+	
 		
 	
 
