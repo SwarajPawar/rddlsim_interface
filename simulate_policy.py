@@ -16,23 +16,23 @@ import sys, os
 global env
 
 
-
+'''
 dataset = 'Elevators'
 steps = 6
 models = 11
-batches = 1
-batch_size = 1
-interval_size = 1
+batches = 10
+batch_size = 1000
+interval_size = 250
 '''
 
 
 dataset = 'Navigation'
 steps = 5
-models = 1
-batches = 10
-batch_size = 1000
+models = 11
+batches = 5
+batch_size = 500
 interval_size = 250
-'''
+
 
 path = 'output'
 
@@ -54,7 +54,6 @@ def get_reward(spmn):
 	for i in range(steps):
 		output = best_next_decision(spmn, complete_sequence)
 		action = int(output[0][0])
-		#action = actions[i]
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)
@@ -131,13 +130,13 @@ def cb_train():
 			for y in range(intervals):
 				reward_slice = list()
 				spmns = [spmn for z in range(interval_size)]
-				reward_slice = pool.map(get_policy, spmns)
-				print(reward_slice)
-				#rewards += reward_slice
-				#printProgressBar(x*intervals + y+1, batches*intervals, prefix = f'Average Reward Evaluation :', suffix = 'Complete', length = 50)
-			#reward_batch.append(sum(rewards) / batch_size)
+				reward_slice = pool.map(get_reward, spmns)
+				#print(reward_slice)
+				rewards += reward_slice
+				printProgressBar(x*intervals + y+1, batches*intervals, prefix = f'Average Reward Evaluation :', suffix = 'Complete', length = 50)
+			reward_batch.append(sum(rewards) / batch_size)
 			
-		'''
+		
 		#get the mean and std dev of the rewards    
 		avg_rewards = np.mean(reward_batch)
 		reward_dev = np.std(reward_batch)
@@ -155,7 +154,7 @@ def cb_train():
 		f.write(f"\n\tAverage Reward : {all_avg_rewards}")
 		f.write(f"\n\tReward Deviation : {all_reward_dev}")
 		f.close()
-		'''
+		
 		#Plot the reward
 		'''
 		plt.close()
