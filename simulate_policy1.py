@@ -16,22 +16,42 @@ import sys, os
 global env
 
 
-
+'''
 dataset = 'Elevators'
 steps = 6
 models = 1
 batches = 10
 batch_size = 1000
 interval_size = 250
-
 '''
+'''
+dataset = 'CrossingTraffic'
+steps = 5
+batches = 25
+batch_size = 20000
+interval_size = 5000
+'''
+
 dataset = 'Navigation'
 steps = 5
+batches = 1
+batch_size = 500000
+interval_size = 5000
+
+'''
+dataset = 'GameOfLife'
+steps = 3
 batches = 10
 batch_size = 1000
 interval_size = 250
 '''
-
+'''
+dataset = 'SysAdmin'
+steps = 4
+batches = 25
+batch_size = 20000
+interval_size = 5000
+'''
 path = 'output'
 
 
@@ -47,9 +67,10 @@ def get_reward(spmn):
 	state = env.reset()
 	complete_sequence = sequence_for_policy.reset()
 	total_reward = 0
+	actions = [1,3,3,4,4]
 	for i in range(steps):
-		output = best_next_decision(spmn, complete_sequence)
-		action = int(output[0][0])
+		#output = best_next_decision(spmn, complete_sequence)
+		action = actions[i] #int(output[0][0])
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)
@@ -78,11 +99,11 @@ def cb_train():
 
 	
 
-	
+	'''
 	file = open(f"models/{dataset}/spmn_original.pkle","rb")
 	spmn = pickle.load(file)
 	file.close()
-
+	'''
 
 	#Initialize parameters for computing rewards
 	total_reward = 0
@@ -95,16 +116,13 @@ def cb_train():
 	for x in range(batches):
 		rewards = list()
 		for y in range(intervals):
-		#for y in range(batch_size):
 			reward_slice = list()
-			spmns = [spmn for z in range(interval_size)]
+			#spmns = [spmn for z in range(interval_size)]
+			spmns = [z for z in range(interval_size)]
 			reward_slice = pool.map(get_reward, spmns)
 			rewards += reward_slice
 			printProgressBar(x*intervals + y+1, batches*intervals, prefix = f'Average Reward Evaluation :', suffix = 'Complete', length = 50)
-			#reward = get_reward(spmn)
-			#print(reward)
-			#rewards.append(reward)
-			#printProgressBar(x*batch_size + y+1, batches*batch_size, prefix = f'Average Reward Evaluation :', suffix = 'Complete', length = 50)
+			
 		reward_batch.append(sum(rewards) / batch_size)
 		
 
@@ -117,13 +135,13 @@ def cb_train():
 	print(f"\tAverage Reward : {avg_rewards}")
 	print(f"\tReward Deviation : {reward_dev}")
 
-
+	'''
 	#Save the reward stats
 	f = open(f"{path}/{dataset}/stats_original.txt", "w")
 	f.write(f"\n\tAverage Reward : {avg_rewards}")
 	f.write(f"\n\tReward Deviation : {reward_dev}")
 	f.close()
-
+	'''
 		
 	
 

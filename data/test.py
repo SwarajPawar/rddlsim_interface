@@ -1,7 +1,7 @@
 
 import pandas as pd
 
-dataset = 'GameOfLife'
+dataset = 'CrossingTraffic'
 df = pd.read_csv(f"{dataset}/{dataset}.tsv", sep='\t')
 data = df.values
 

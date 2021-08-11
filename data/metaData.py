@@ -10,6 +10,8 @@ def get_decNode(dataset_name):
         return [f'Action_{i}' for i in range(3)]
     elif dataset_name == 'SysAdmin':
         return [f'Action_{i}' for i in range(4)]
+    elif dataset_name == 'CrossingTraffic':
+        return [f'Action_{i}' for i in range(5)]
     else:
         print(dataset_name)
 
@@ -23,6 +25,8 @@ def get_utilityNode(dataset_name):
     if dataset_name == 'GameOfLife':
         return ['Reward']
     if dataset_name == 'SysAdmin':
+        return ['Reward']
+    if dataset_name == 'CrossingTraffic':
         return ['Reward']
 
 def get_scope_vars(dataset_name):
@@ -64,6 +68,16 @@ def get_partial_order(dataset_name):
                                 f'Robot_at_4_t{i}', f'Robot_at_5_t{i}', f'Robot_at_6_t{i}'], [f'Action_{i}']]
         partialOrder += [[f'Robot_at_1_t5', f'Robot_at_2_t5', f'Robot_at_3_t5', 
                                 f'Robot_at_4_t5', f'Robot_at_5_t5', f'Robot_at_6_t5', 'Reward']]
+        return partialOrder
+    if dataset_name == 'CrossingTraffic':
+        partialOrder = list()
+        for i in range(5):
+            partialOrder += [[f'Robot_at_1_t{i}', f'Robot_at_2_t{i}', f'Robot_at_3_t{i}', 
+                                f'Robot_at_4_t{i}', f'Robot_at_5_t{i}', f'Robot_at_6_t{i}',
+                                f'Obstacle_at_2_t{i}', f'Obstacle_at_5_t{i}'], [f'Action_{i}']]
+        partialOrder += [[f'Robot_at_1_t5', f'Robot_at_2_t5', f'Robot_at_3_t5', 
+                                f'Robot_at_4_t5', f'Robot_at_5_t5', f'Robot_at_6_t5',
+                                f'Obstacle_at_2_t5', f'Obstacle_at_5_t5', 'Reward']]
         return partialOrder
 
     if dataset_name == 'GameOfLife':
@@ -118,6 +132,14 @@ def get_feature_labels(dataset_name):
             features += [f'R1{i}', f'R2{i}', f'R3{i}', f'R4{i}',  f'R5{i}' f'A{i}']
         features += [f'R14', f'R24', f'R34', f'R44', f'R54', 'RW']
         return features
+        
+    if dataset_name == 'CrossingTraffic': 
+        features = list()
+        for i in range(5):
+            features += [f'R1{i}', f'R2{i}', f'R3{i}', f'R4{i}', f'R5{i}', f'R6{i}', f'O2{i}', f'O5{i}', f'A{i}']
+        features += [f'R15', f'R25', f'R35', f'R45', f'R55', f'R65', f'O25', f'O55', 'RW']
+        return features
+
 
 
 
