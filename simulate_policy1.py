@@ -34,8 +34,8 @@ interval_size = 5000
 
 dataset = 'Navigation'
 steps = 5
-batches = 5
-batch_size = 500
+batches = 10
+batch_size = 1000
 interval_size = 250
 
 '''
