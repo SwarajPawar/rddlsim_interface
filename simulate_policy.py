@@ -25,14 +25,21 @@ batch_size = 1000
 interval_size = 250
 '''
 
-
+'''
 dataset = 'Navigation'
 steps = 5
 models = 11
 batches = 5
 batch_size = 500
 interval_size = 250
+'''
 
+dataset = 'CrossingTraffic'
+steps = 5
+models = 11
+batches = 5
+batch_size = 500
+interval_size = 250
 
 path = 'output'
 
@@ -107,11 +114,11 @@ def cb_train():
 	#optimal_meu = get_optimal_meu(dataset)
 	#random_policy_reward = get_random_policy_reward(dataset)
 
-	all_avg_rewards = []
-	all_reward_dev = []
+	all_avg_rewards = [-5.0, -5.0]
+	all_reward_dev = [0.0, 0.0]
 
 
-	for model in range(models):
+	for model in range(2,models):
 		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
 		spmn = pickle.load(file)
 		file.close()
