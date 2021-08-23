@@ -12,6 +12,8 @@ def get_decNode(dataset_name):
         return [f'Action_{i}' for i in range(4)]
     elif dataset_name == 'CrossingTraffic':
         return [f'Action_{i}' for i in range(5)]
+    elif dataset_name == 'SkillTeaching':
+        return [f'Action_{i}' for i in range(5)]
     else:
         print(dataset_name)
 
@@ -27,6 +29,8 @@ def get_utilityNode(dataset_name):
     if dataset_name == 'SysAdmin':
         return ['Reward']
     if dataset_name == 'CrossingTraffic':
+        return ['Reward']
+    if dataset_name == 'SkillTeaching':
         return ['Reward']
 
 def get_scope_vars(dataset_name):
@@ -90,6 +94,18 @@ def get_partial_order(dataset_name):
                                 f'Cell_4_t3', f'Cell_5_t3', f'Cell_6_t3',
                                 f'Cell_7_t3', f'Cell_8_t3', f'Cell_9_t3', 'Reward']]
         return partialOrder
+    if dataset_name == 'SkillTeaching':
+        partialOrder = list()
+        for i in range(5):
+            partialOrder += [[f'HintDelayVarS0_t{i}', f'HintDelayVarS1_t{i}', f'HintedRightS0_t{i}', f'HintedRightS1_t{i}',
+                                f'ProficiencyMedS0_t{i}', f'ProficiencyMedS1_t{i}', f'UpdateTurnS0_t{i}', f'UpdateTurnS1_t{i}',
+                                f'AnsweredRightS0_t{i}', f'AnsweredRightS1_t{i}', f'ProficiencyHighS0_t{i}', f'ProficiencyHighS1_t{i}'],
+                                [f'Action_{i}']]
+        partialOrder += [[f'HintDelayVarS0_t5', f'HintDelayVarS1_t5', f'HintedRightS0_t5', f'HintedRightS1_t5',
+                                f'ProficiencyMedS0_t5', f'ProficiencyMedS1_t5', f'UpdateTurnS0_t5', f'UpdateTurnS1_t5',
+                                f'AnsweredRightS0_t5', f'AnsweredRightS1_t5', f'ProficiencyHighS0_t5', f'ProficiencyHighS1_t5',
+                                 'Reward']]
+        return partialOrder
     if dataset_name == 'SysAdmin':
         partialOrder = list()
         for i in range(4):
@@ -138,6 +154,14 @@ def get_feature_labels(dataset_name):
         for i in range(5):
             features += [f'R1{i}', f'R2{i}', f'R3{i}', f'R4{i}', f'R5{i}', f'R6{i}', f'O2{i}', f'O5{i}', f'A{i}']
         features += [f'R15', f'R25', f'R35', f'R45', f'R55', f'R65', f'O25', f'O55', 'RW']
+        return features
+    if dataset_name == 'SkillTeaching': 
+        features = list()
+        for i in range(5):
+            features += [f'HD0{i}', f'HD1{i}', f'HR0{i}', f'HR1{i}', f'PM0{i}', f'PM1{i}', f'UT0{i}', f'UT1{i}',
+                                f'AR0{i}', f'AR1{i}', f'PH0{i}', f'PH1{i}', f'A{i}']
+        features += [f'HD05', f'HD15', f'HR05', f'HR15', f'PM05', f'PM15', f'UT05', f'UT15',
+                                f'AR05', f'AR15', f'PH05', f'PH15', 'RW']
         return features
 
 

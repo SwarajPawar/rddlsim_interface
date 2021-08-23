@@ -9,11 +9,17 @@ from data.utils import *
 global env
 
 
+dataset = 'SkillTeaching'
+instances = 500000
+steps = 5
+n_actions = 4
+
+'''
 dataset = 'CrossingTraffic'
 instances = 500000
 steps = 5
 n_actions = 4
-'''
+
 dataset = 'Navigation'
 instances = 500000
 steps = 5
@@ -102,5 +108,4 @@ def cb_test(state):
 
 env.connectToServer("localhost", 2323, cb_train, cb_test)
 
-#-7.8615
-#-7.3568
+

@@ -33,13 +33,20 @@ batches = 5
 batch_size = 500
 interval_size = 250
 '''
-
+'''
 dataset = 'CrossingTraffic'
 steps = 5
 models = 11
 batches = 5
 batch_size = 500
 interval_size = 250
+'''
+dataset = 'GameOfLife'
+steps = 3
+models = 9
+batches = 5
+batch_size = 500
+interval_size = 500
 
 path = 'output'
 
@@ -114,8 +121,8 @@ def cb_train():
 	#optimal_meu = get_optimal_meu(dataset)
 	#random_policy_reward = get_random_policy_reward(dataset)
 
-	all_avg_rewards = [-5.0, -5.0]
-	all_reward_dev = [0.0, 0.0]
+	all_avg_rewards = [9.6004, 10.145599999999998]
+	all_reward_dev = [0.15122645271248045, 0.09533435896884153]
 
 
 	for model in range(2,models):
@@ -123,6 +130,7 @@ def cb_train():
 		spmn = pickle.load(file)
 		file.close()
 
+		print(f"\n\nModel {model+1}")
 
 		#Initialize parameters for computing rewards
 		total_reward = 0
@@ -151,8 +159,8 @@ def cb_train():
 		all_avg_rewards.append(avg_rewards)
 		all_reward_dev.append(reward_dev)
 
-		print(f"\n\nModel {model+1}")
-		print(f"\tAverage Reward : {avg_rewards}")
+		
+		print(f"\n\tAverage Reward : {avg_rewards}")
 		print(f"\tReward Deviation : {reward_dev}")
 
 		
