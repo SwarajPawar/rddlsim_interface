@@ -9,7 +9,7 @@ def get_decNode(dataset_name):
     elif dataset_name == 'GameOfLife':
         return [f'Action_{i}' for i in range(3)]
     elif dataset_name == 'SysAdmin':
-        return [f'Action_{i}' for i in range(4)]
+        return [f'Action_{i}' for i in range(3)]
     elif dataset_name == 'CrossingTraffic':
         return [f'Action_{i}' for i in range(5)]
     elif dataset_name == 'SkillTeaching':
@@ -108,11 +108,11 @@ def get_partial_order(dataset_name):
         return partialOrder
     if dataset_name == 'SysAdmin':
         partialOrder = list()
-        for i in range(4):
-            partialOrder += [[f'Running_1_t{i}', f'Running_2_t{i}', f'Running_3_t{i}', 
-                                f'Running_4_t{i}', f'Running_5_t{i}'], [f'Action_{i}']]
-        partialOrder += [[f'Running_1_t4', f'Running_2_t4', f'Running_3_t4', 
-                                f'Running_4_t4', f'Running_5_t4', 'Reward']]
+        for i in range(3):
+            partialOrder += [[f'Running_1_t{i}', f'Running_2_t{i}', f'Running_3_t{i}', f'Running_4_t{i}', f'Running_5_t{i}', 
+                                f'Running_6_t{i}', f'Running_7_t{i}', f'Running_8_t{i}', f'Running_9_t{i}', f'Running_10_t{i}'], [f'Action_{i}']]
+        partialOrder += [[f'Running_1_t3', f'Running_2_t3', f'Running_3_t3', f'Running_4_t3', f'Running_5_t3', 
+                            f'Running_6_t3', f'Running_7_t3', f'Running_8_t3', f'Running_9_t3', f'Running_10_t3', 'Reward']]
         return partialOrder
     else:
         print(dataset_name)
@@ -144,9 +144,9 @@ def get_feature_labels(dataset_name):
 
     if dataset_name == 'SysAdmin': 
         features = list()
-        for i in range(4):
-            features += [f'R1{i}', f'R2{i}', f'R3{i}', f'R4{i}',  f'R5{i}' f'A{i}']
-        features += [f'R14', f'R24', f'R34', f'R44', f'R54', 'RW']
+        for i in range(3):
+            features += [f'R1{i}', f'R2{i}', f'R3{i}', f'R4{i}', f'R5{i}', f'R6{i}', f'R7{i}', f'R8{i}', f'R9{i}', f'R10{i}', f'A{i}']
+        features += [f'R13', f'R23', f'R33', f'R43', f'R53', f'R63', f'R73', f'R83', f'R93', f'R103', 'RW']
         return features
         
     if dataset_name == 'CrossingTraffic': 
@@ -155,6 +155,7 @@ def get_feature_labels(dataset_name):
             features += [f'R1{i}', f'R2{i}', f'R3{i}', f'R4{i}', f'R5{i}', f'R6{i}', f'O2{i}', f'O5{i}', f'A{i}']
         features += [f'R15', f'R25', f'R35', f'R45', f'R55', f'R65', f'O25', f'O55', 'RW']
         return features
+        
     if dataset_name == 'SkillTeaching': 
         features = list()
         for i in range(5):
