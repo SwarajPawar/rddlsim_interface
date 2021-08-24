@@ -52,7 +52,7 @@ convert_state = get_state_for_dataset(dataset)
 def cb_train():
 	
 
-	return
+	#return
 	global env
 	print("\n\n\n\ncb_train:")
 
@@ -95,7 +95,7 @@ def cb_train():
 
 
 def cb_test(state):
-    #exit(1)
+    exit(1)
     
     global env
     state = npct.as_array(state, (env.num_state_vars,))
