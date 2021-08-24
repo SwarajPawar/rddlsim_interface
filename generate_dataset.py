@@ -8,13 +8,12 @@ from data.utils import *
 
 global env
 
-
+'''
 dataset = 'SkillTeaching'
 instances = 500000
 steps = 5
 n_actions = 4
 
-'''
 dataset = 'CrossingTraffic'
 instances = 500000
 steps = 5
@@ -35,13 +34,13 @@ dataset = 'GameOfLife'
 instances = 500000
 steps = 3
 n_actions = 9
-
+'''
 
 dataset = 'SysAdmin'
 instances = 500000
-steps = 4
-n_actions = 5
-'''
+steps = 3
+n_actions = 10
+
 
 env = get_env(dataset)
 convert_state = get_state_for_dataset(dataset)
@@ -53,7 +52,7 @@ convert_state = get_state_for_dataset(dataset)
 def cb_train():
 	
 
-	#return
+	return
 	global env
 	print("\n\n\n\ncb_train:")
 
@@ -96,7 +95,7 @@ def cb_train():
 
 
 def cb_test(state):
-    exit(1)
+    #exit(1)
     
     global env
     state = npct.as_array(state, (env.num_state_vars,))
