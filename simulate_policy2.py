@@ -42,6 +42,14 @@ batches = 1
 batch_size = 1
 interval_size = 1
 
+
+dataset = 'GameOfLife'
+steps = 3
+models = 9
+batches = 1
+batch_size = 1
+interval_size = 1
+
 path = 'output'
 
 
@@ -117,30 +125,24 @@ def cb_train():
 
 	
 
-
-	for model in range(8,models):
+	policies = []
+	for model in range(models):
 		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
 		spmn = pickle.load(file)
 		file.close()
+		print(f'Model {model+1}')
 
 
-		#Initialize parameters for computing rewards
-		total_reward = 0
-		reward_batch = list()
-
-		pool = multiprocessing.Pool()
-
-		#Get the rewards parallely for each batch
-		intervals = int(batch_size/interval_size)
-		for x in range(batches):
-			rewards = list()
-			for y in range(intervals):
-				reward_slice = list()
-				spmns = [spmn for z in range(interval_size)]
-				reward_slice = pool.map(get_policy, spmns)
-				print(reward_slice)
-			
 		
+		policy = get_policy(spmn)
+		print(policy)
+
+		policies.append(policy)
+		#Save the reward stats
+		f = open(f"{path}/{dataset}/policies.txt", "a")
+		f.write(f"\n\nModel: {model+1}")
+		f.write(f"\n\tPolicy : {policy}")
+		f.close()
 
 		
 		#Plot the reward
