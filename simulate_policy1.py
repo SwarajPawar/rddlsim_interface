@@ -24,20 +24,20 @@ batches = 10
 batch_size = 1000
 interval_size = 250
 '''
-'''
+
 dataset = 'CrossingTraffic'
 steps = 5
-batches = 25
-batch_size = 20000
+batches = 1
+batch_size = 50000
 interval_size = 5000
-'''
 
+'''
 dataset = 'Navigation'
 steps = 5
 batches = 10
 batch_size = 1000
 interval_size = 250
-
+'''
 '''
 dataset = 'GameOfLife'
 steps = 3
@@ -67,10 +67,10 @@ def get_reward(spmn):
 	state = env.reset()
 	complete_sequence = sequence_for_policy.reset()
 	total_reward = 0
-	#actions = [1,3,3,4,4]
+	actions = [3,3,3,3,3]
 	for i in range(steps):
-		output = best_next_decision(spmn, complete_sequence)
-		action = int(output[0][0])
+		#output = best_next_decision(spmn, complete_sequence)
+		action = actions
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)
@@ -117,8 +117,8 @@ def cb_train():
 		rewards = list()
 		for y in range(intervals):
 			reward_slice = list()
-			spmns = [spmn for z in range(interval_size)]
-			#spmns = [z for z in range(interval_size)]
+			#spmns = [spmn for z in range(interval_size)]
+			spmns = [z for z in range(interval_size)]
 			reward_slice = pool.map(get_reward, spmns)
 			rewards += reward_slice
 			printProgressBar(x*intervals + y+1, batches*intervals, prefix = f'Average Reward Evaluation :', suffix = 'Complete', length = 50)
