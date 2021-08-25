@@ -43,13 +43,19 @@ interval_size = 250
 '''
 dataset = 'GameOfLife'
 steps = 3
-models = 9
+models = 12
 batches = 5
-batch_size = 500
-interval_size = 500
+batch_size = 100
+interval_size = 100
 
 path = 'output'
 
+policies = [[5,6,8],
+			[8,7,6],
+			[9,2,2],
+			[2,2,2],
+			[8,2,2],
+			[8,6,6]]
 
 
 env = get_env(dataset)
