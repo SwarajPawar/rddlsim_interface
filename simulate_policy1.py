@@ -24,13 +24,13 @@ batches = 10
 batch_size = 1000
 interval_size = 250
 '''
-
+'''
 dataset = 'CrossingTraffic'
 steps = 5
 batches = 1
 batch_size = 50000
 interval_size = 5000
-
+'''
 '''
 dataset = 'Navigation'
 steps = 5
@@ -38,18 +38,25 @@ batches = 10
 batch_size = 1000
 interval_size = 250
 '''
-'''
+
 dataset = 'GameOfLife'
 steps = 3
-batches = 10
-batch_size = 1000
-interval_size = 250
-'''
+batches = 1
+batch_size = 500000
+interval_size = 5000
+
 '''
 dataset = 'SysAdmin'
 steps = 4
 batches = 25
 batch_size = 20000
+interval_size = 5000
+'''
+'''
+dataset = 'SkillTeaching'
+steps = 5
+batches = 1
+batch_size = 500000
 interval_size = 5000
 '''
 path = 'output'
@@ -67,10 +74,10 @@ def get_reward(spmn):
 	state = env.reset()
 	complete_sequence = sequence_for_policy.reset()
 	total_reward = 0
-	actions = [3,3,3,3,3]
+	actions = [2,4,5]
 	for i in range(steps):
 		#output = best_next_decision(spmn, complete_sequence)
-		action = actions
+		action = actions[i]
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)
@@ -99,11 +106,11 @@ def cb_train():
 
 	
 
-	
+	'''
 	file = open(f"models/{dataset}/spmn_original.pkle","rb")
 	spmn = pickle.load(file)
 	file.close()
-	
+	'''
 
 	#Initialize parameters for computing rewards
 	total_reward = 0
@@ -148,7 +155,7 @@ def cb_train():
 
 
 def cb_test(state):
-	exit(1)
+	exit(0)
 	
 	global env
 	state = npct.as_array(state, (env.num_state_vars,))

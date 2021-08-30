@@ -17,3 +17,9 @@ Model: 5
 
 Model: 6
 	Policy : [8, 6, 6]
+
+Model: 1
+	Policy : [3, 6, 2]
+
+Model: 2
+	Policy : [5, 1, 2]

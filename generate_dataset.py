@@ -8,12 +8,12 @@ from data.utils import *
 
 global env
 
-'''
+
 dataset = 'SkillTeaching'
 instances = 500000
 steps = 5
 n_actions = 4
-
+'''
 dataset = 'CrossingTraffic'
 instances = 500000
 steps = 5
@@ -35,12 +35,12 @@ instances = 500000
 steps = 3
 n_actions = 9
 '''
-
+'''
 dataset = 'SysAdmin'
 instances = 500000
 steps = 3
 n_actions = 10
-
+'''
 
 env = get_env(dataset)
 convert_state = get_state_for_dataset(dataset)

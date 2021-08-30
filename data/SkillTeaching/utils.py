@@ -55,7 +55,7 @@ def convert_state_variables_SkillTeaching(state):
 class SkillTeaching:
 
 	def __init__(self):
-		self.decisions = 4
+		self.decisions = 5
 		self.info_set_size = 12
 
 

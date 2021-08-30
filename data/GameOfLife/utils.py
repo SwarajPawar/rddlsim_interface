@@ -24,15 +24,15 @@ import numpy as np
 
 	Actions:
 
-	1: Set 1
-	2: Set 2
-	3: Set 3
-	4: Set 4
+	1: Set 9
+	2: Set 8
+	3: Set 7
+	4: Set 6
 	5: Set 5
-	6: Set 6
-	7: Set 7
-	8: Set 8
-	9: Set 9
+	6: Set 4
+	7: Set 3
+	8: Set 2
+	9: Set 1
 
 
 	----------------------------------------------------
