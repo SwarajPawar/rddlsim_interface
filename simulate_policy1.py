@@ -24,13 +24,13 @@ batches = 10
 batch_size = 1000
 interval_size = 250
 '''
-'''
+
 dataset = 'CrossingTraffic'
 steps = 5
-batches = 1
-batch_size = 50000
+batches = 25
+batch_size = 20000
 interval_size = 5000
-'''
+
 '''
 dataset = 'Navigation'
 steps = 5
@@ -38,13 +38,13 @@ batches = 10
 batch_size = 1000
 interval_size = 250
 '''
-
+'''
 dataset = 'GameOfLife'
 steps = 3
 batches = 25
 batch_size = 20000
 interval_size = 5000
-
+'''
 '''
 dataset = 'SysAdmin'
 steps = 4
@@ -74,10 +74,10 @@ def get_reward(spmn):
 	state = env.reset()
 	complete_sequence = sequence_for_policy.reset()
 	total_reward = 0
-	actions = [2,1,1]#[2,9,5]
+	actions = [3,4,3,4,4]
 	for i in range(steps):
 		#output = best_next_decision(spmn, complete_sequence)
-		action = actions[i]
+		action = random.randint(1,4) #actions[i]
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)
