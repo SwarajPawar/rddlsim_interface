@@ -5,8 +5,8 @@ import pickle
 import random
 from data.metaData import get_feature_names
 from data.utils import *
-from spn.algorithms.Anytime_MEU import best_next_decision
-#from spn.algorithms.MEU import best_next_decision
+#from spn.algorithms.Anytime_MEU import best_next_decision
+from spn.algorithms.MEU import best_next_decision
 from spn.io.ProgressBar import printProgressBar
 from spn.data.domain_stats import get_original_stats, get_optimal_meu, get_random_policy_reward
 import matplotlib.pyplot as plt
@@ -37,19 +37,19 @@ interval_size = 250
 
 dataset = 'CrossingTraffic'
 steps = 5
-models = 11
+models = 1
 batches = 1
 batch_size = 1
 interval_size = 1
 
-
+'''
 dataset = 'GameOfLife'
 steps = 3
-models = 9
+models = 1
 batches = 1
 batch_size = 1
 interval_size = 1
-
+'''
 path = 'output'
 
 
@@ -127,7 +127,7 @@ def cb_train():
 
 	policies = []
 	for model in range(models):
-		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
+		file = open(f"models/{dataset}/spmn_original.pkle","rb")
 		spmn = pickle.load(file)
 		file.close()
 		print(f'Model {model+1}')
@@ -139,7 +139,7 @@ def cb_train():
 
 		policies.append(policy)
 		#Save the reward stats
-		f = open(f"{path}/{dataset}/policies.txt", "a")
+		f = open(f"{path}/{dataset}/policies_learnspmn.txt", "a")
 		f.write(f"\n\nModel: {model+1}")
 		f.write(f"\n\tPolicy : {policy}")
 		f.close()

@@ -15,3 +15,8 @@ from collections import Counter
 freq = Counter(rewards)
 
 print(freq)
+
+
+for x in data:
+	if x[-1] == -4:
+		print(x)

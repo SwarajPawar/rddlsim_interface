@@ -17,7 +17,7 @@ def get_env(dataset):
     if dataset == "SysAdmin":
         return RDDLEnv("sysadmin_inst_mdp__2")
     if dataset == "CrossingTraffic":
-        return RDDLEnv("crossing_traffic_inst_mdp__2")
+        return RDDLEnv("crossing_traffic_inst_mdp__4")
     if dataset == "SkillTeaching":
         return RDDLEnv("skill_teaching_inst_mdp__2")
 

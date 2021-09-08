@@ -41,8 +41,8 @@ interval_size = 250
 
 dataset = 'GameOfLife'
 steps = 3
-batches = 1
-batch_size = 500000
+batches = 25
+batch_size = 20000
 interval_size = 5000
 
 '''
@@ -74,7 +74,7 @@ def get_reward(spmn):
 	state = env.reset()
 	complete_sequence = sequence_for_policy.reset()
 	total_reward = 0
-	actions = [2,4,5]
+	actions = [2,1,1]#[2,9,5]
 	for i in range(steps):
 		#output = best_next_decision(spmn, complete_sequence)
 		action = actions[i]
@@ -142,13 +142,13 @@ def cb_train():
 	print(f"\tAverage Reward : {avg_rewards}")
 	print(f"\tReward Deviation : {reward_dev}")
 
-	
+	'''
 	#Save the reward stats
 	f = open(f"{path}/{dataset}/stats_original.txt", "w")
 	f.write(f"\n\tAverage Reward : {avg_rewards}")
 	f.write(f"\n\tReward Deviation : {reward_dev}")
 	f.close()
-	
+	'''
 		
 	
 

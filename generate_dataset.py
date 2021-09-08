@@ -8,7 +8,7 @@ from data.utils import *
 
 global env
 
-
+'''
 dataset = 'SkillTeaching'
 instances = 500000
 steps = 5
@@ -18,7 +18,7 @@ dataset = 'CrossingTraffic'
 instances = 500000
 steps = 5
 n_actions = 4
-
+'''
 dataset = 'Navigation'
 instances = 500000
 steps = 5
