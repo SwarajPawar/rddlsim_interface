@@ -71,9 +71,14 @@ def cb_train():
 
 		instance += state
 		total_reward = 0
+		actions = [3,4,3,4,4]
+		p = random.random()
 		for j in range(steps):
 			
-			action = random.randint(1,n_actions)
+			if p < 0.2:
+				action = actions[j]
+			else:
+				action = random.randint(1,n_actions)
 			state, reward, done, _ = env.doAction(action)
 			total_reward += reward
 			instance += [action] + convert_state(state)
