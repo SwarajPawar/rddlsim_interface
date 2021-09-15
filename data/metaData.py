@@ -73,6 +73,7 @@ def get_partial_order(dataset_name):
         partialOrder += [[f'Robot_at_1_t5', f'Robot_at_2_t5', f'Robot_at_3_t5', 
                                 f'Robot_at_4_t5', f'Robot_at_5_t5', f'Robot_at_6_t5', 'Reward']]
         return partialOrder
+    '''
     if dataset_name == 'CrossingTraffic':
         partialOrder = list()
         for i in range(5):
@@ -85,7 +86,17 @@ def get_partial_order(dataset_name):
                                 f'Robot_at_7_t5', f'Robot_at_8_t5', f'Robot_at_9_t5',
                                 f'Obstacle_at_2_t5', f'Obstacle_at_5_t5', f'Obstacle_at_8_t5', 'Reward']]
         return partialOrder
-
+    '''
+    if dataset_name == 'CrossingTraffic':
+        partialOrder = list()
+        for i in range(5):
+            partialOrder += [[f'Robot_at_1_t{i}', f'Robot_at_2_t{i}', f'Robot_at_3_t{i}', 
+                                f'Robot_at_4_t{i}', f'Robot_at_5_t{i}', f'Robot_at_6_t{i}',
+                                f'Obstacle_at_2_t{i}', f'Obstacle_at_5_t{i}'], [f'Action_{i}']]
+        partialOrder += [[f'Robot_at_1_t5', f'Robot_at_2_t5', f'Robot_at_3_t5', 
+                                f'Robot_at_4_t5', f'Robot_at_5_t5', f'Robot_at_6_t5',
+                                f'Obstacle_at_2_t5', f'Obstacle_at_5_t5', 'Reward']]
+        return partialOrder
     if dataset_name == 'GameOfLife':
         partialOrder = list()
         for i in range(3):
@@ -150,7 +161,7 @@ def get_feature_labels(dataset_name):
             features += [f'R1{i}', f'R2{i}', f'R3{i}', f'R4{i}', f'R5{i}', f'R6{i}', f'R7{i}', f'R8{i}', f'R9{i}', f'R10{i}', f'A{i}']
         features += [f'R13', f'R23', f'R33', f'R43', f'R53', f'R63', f'R73', f'R83', f'R93', f'R103', 'RW']
         return features
-        
+    '''
     if dataset_name == 'CrossingTraffic': 
         features = list()
         for i in range(5):
@@ -159,7 +170,16 @@ def get_feature_labels(dataset_name):
         features += [f'R15', f'R25', f'R35', f'R45', f'R55', f'R65',
                      f'R75', f'R85', f'R95', f'O25', f'O55', f'O85', 'RW']
         return features
-        
+    '''
+    if dataset_name == 'CrossingTraffic': 
+        features = list()
+        for i in range(5):
+            features += [f'R1{i}', f'R2{i}', f'R3{i}', f'R4{i}', f'R5{i}', f'R6{i}',
+                         f'O2{i}', f'O5{i}', f'A{i}']
+        features += [f'R15', f'R25', f'R35', f'R45', f'R55', f'R65',
+                     f'O25', f'O55', 'RW']
+        return features
+
     if dataset_name == 'SkillTeaching': 
         features = list()
         for i in range(5):

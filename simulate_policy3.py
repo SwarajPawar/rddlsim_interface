@@ -8,6 +8,7 @@ from data.utils import *
 #from spn.algorithms.Anytime_MEU import best_next_decision
 from spn.algorithms.MEU import best_next_decision, meu
 from spn.io.ProgressBar import printProgressBar
+from spn.io.Graphics import plot_spn
 from spn.data.domain_stats import get_original_stats, get_optimal_meu, get_random_policy_reward
 from spn.data.metaData import get_partial_order, get_utilityNode, get_decNode, get_feature_names, get_feature_labels
 import matplotlib.pyplot as plt
@@ -39,5 +40,6 @@ feature_names = get_feature_names(dataset)
 feature_labels = get_feature_labels(dataset)
 	
 test_data = [[np.nan]*len(feature_names)]
-m = meu(spmn, test_data)
-print(m)
+plot_spn(spmn, f'output/{dataset}/spmn.pdf', feature_labels=feature_labels)
+#m = meu(spmn, test_data)
+#print(m)

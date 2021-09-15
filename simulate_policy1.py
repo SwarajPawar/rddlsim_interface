@@ -74,10 +74,10 @@ def get_reward(spmn):
 	state = env.reset()
 	complete_sequence = sequence_for_policy.reset()
 	total_reward = 0
-	actions = [3,4,3,4,4]
+	actions = [3,3,4,4,1]
 	for i in range(steps):
 		#output = best_next_decision(spmn, complete_sequence)
-		action = random.randint(1,4) #actions[i]
+		action = actions[i]
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)

@@ -19,6 +19,8 @@ from spn.structure.Base import InterfaceSwitch
 def meu_sum(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
     meu_children = meu_per_node[:,[child.id for child in node.children]]
     likelihood_children = lls_per_node[:,[child.id for child in node.children]]
+    if np.isnan(likelihood_children).all():
+        likelihood_children = np.ones(likelihood_children.shape)
     weighted_likelihood = np.array(node.weights)*likelihood_children
     norm = np.sum(weighted_likelihood, axis=1)
     normalized_weighted_likelihood = weighted_likelihood / norm.reshape(-1,1)
@@ -28,7 +30,6 @@ def meu_sum(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
     #     print(f'meu_children in latent sum node {meu_children}')
     #     print(
     #         f'meu at latent sum node {node.id} is {meu_per_node[:,node.id]}')
-
 
 
 def meu_prod(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
@@ -61,9 +62,6 @@ def meu_max(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
         child_id = dec_value_to_child_id(dec_value)
         meu_per_node[:,node.id] = meu_per_node[np.arange(meu_per_node.shape[0]),child_id]
 
-    print("\n")
-    print(node.dec_idx)
-    print(dec_value)
 
 
 def meu_util(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
@@ -246,22 +244,14 @@ def best_next_decision(root, input_data, in_place=False):
     assert next_dec_idx is not None, "please assign all values of next decision to np.nan"
     # determine best decisions based on meu
     dec_vals = list(dec_dict[next_dec_idx])
-    print("\n\n")
-    print(dec_vals)
     best_decisions = np.full((1,data.shape[0]),dec_vals[0])
     data[:,next_dec_idx] = best_decisions
-    print(best_decisions)
-    print(data)
     meu_best = meu(root, data)
-    print(meu_best)
 
     for i in range(1, len(dec_vals)):
         decisions_i = np.full((1,data.shape[0]), dec_vals[i])
-        print(decisions_i)
         data[:,next_dec_idx] = decisions_i
-        print(data)
         meu_i = meu(root, data)
-        print(meu_i)
         best_decisions = np.select([np.greater(meu_i, meu_best),True],[decisions_i, best_decisions])
         meu_best = np.maximum(meu_i,meu_best)
     return best_decisions
