@@ -33,13 +33,14 @@ batches = 5
 batch_size = 500
 interval_size = 250
 '''
-'''
+
 dataset = 'CrossingTraffic'
 steps = 5
 models = 11
 batches = 5
 batch_size = 500
 interval_size = 250
+
 '''
 dataset = 'GameOfLife'
 steps = 3
@@ -47,15 +48,10 @@ models = 18
 batches = 5
 batch_size = 100
 interval_size = 100
-
+'''
 path = 'output'
 
-policies = [[5,6,8],
-			[8,7,6],
-			[9,2,2],
-			[2,2,2],
-			[8,2,2],
-			[8,6,6]]
+
 
 
 env = get_env(dataset)
@@ -127,11 +123,11 @@ def cb_train():
 	#optimal_meu = get_optimal_meu(dataset)
 	#random_policy_reward = get_random_policy_reward(dataset)
 
-	all_avg_rewards = [9.6004, 10.145599999999998, 9.25, 9.802]
-	all_reward_dev = [0.15122645271248045, 0.09533435896884153, 0.2830547650190688, 0.23181026724457227]
+	all_avg_rewards = []
+	all_reward_dev = []
 
 
-	for model in range(4,models):
+	for model in range(models):
 		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
 		spmn = pickle.load(file)
 		file.close()
