@@ -32,6 +32,7 @@ def meu_sum(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
     #         f'meu at latent sum node {node.id} is {meu_per_node[:,node.id]}')
 
 
+
 def meu_prod(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
     # product node adds together the utilities of its children
     # if there is only one utility node then only one child of each product node
@@ -61,7 +62,6 @@ def meu_max(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
         dec_value_to_child_id = np.vectorize(dec_value_to_child_id)
         child_id = dec_value_to_child_id(dec_value)
         meu_per_node[:,node.id] = meu_per_node[np.arange(meu_per_node.shape[0]),child_id]
-
 
 
 def meu_util(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
@@ -247,7 +247,6 @@ def best_next_decision(root, input_data, in_place=False):
     best_decisions = np.full((1,data.shape[0]),dec_vals[0])
     data[:,next_dec_idx] = best_decisions
     meu_best = meu(root, data)
-
     for i in range(1, len(dec_vals)):
         decisions_i = np.full((1,data.shape[0]), dec_vals[i])
         data[:,next_dec_idx] = decisions_i
