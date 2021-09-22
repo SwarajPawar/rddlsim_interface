@@ -5,8 +5,8 @@ import pickle
 import random
 from data.metaData import get_feature_names
 from data.utils import *
-#from spn.algorithms.Anytime_MEU import best_next_decision
-from spn.algorithms.MEU import best_next_decision
+from spn.algorithms.Anytime_MEU import best_next_decision
+#from spn.algorithms.MEU import best_next_decision
 from spn.io.ProgressBar import printProgressBar
 from spn.data.domain_stats import get_original_stats, get_optimal_meu, get_random_policy_reward
 import matplotlib.pyplot as plt
@@ -34,22 +34,22 @@ batches = 5
 batch_size = 500
 interval_size = 250
 '''
-'''
+
 dataset = 'CrossingTraffic'
 steps = 5
-models = 1
+models = 9
 batches = 1
 batch_size = 1
 interval_size = 1
-'''
 
+'''
 dataset = 'GameOfLife'
 steps = 3
 models = 1
 batches = 1
 batch_size = 1
 interval_size = 1
-
+'''
 path = 'output'
 
 
@@ -87,11 +87,12 @@ def get_policy(spmn):
 	total_reward = 0
 	policy = []
 	for i in range(steps):
-		#possible, output = best_next_decision(spmn, complete_sequence)
-		output = best_next_decision(spmn, complete_sequence)
+		possible, output = best_next_decision(spmn, complete_sequence)
+		#output = best_next_decision(spmn, complete_sequence)
 		action = int(output[0][0])
-		#policy.append(possible)
-		policy.append(action)
+		print(possible)
+		policy.append(possible)
+		#policy.append(action)
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)
@@ -129,7 +130,7 @@ def cb_train():
 
 	policies = []
 	for model in range(models):
-		file = open(f"models/{dataset}/spmn_original.pkle","rb")
+		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
 		spmn = pickle.load(file)
 		file.close()
 		print(f'\nModel {model+1}')
@@ -142,7 +143,7 @@ def cb_train():
 		policies.append(policy)
 		
 		#Save the reward stats
-		f = open(f"{path}/{dataset}/policies_original.txt", "a")
+		f = open(f"{path}/{dataset}/policies.txt", "a")
 		f.write(f"\n\nModel: {model+1}")
 		f.write(f"\n\tPolicy : {policy}")
 		f.close()

@@ -33,22 +33,22 @@ batches = 5
 batch_size = 500
 interval_size = 250
 '''
-'''
+
 dataset = 'CrossingTraffic'
 steps = 5
-models = 1
-batches = 5
-batch_size = 500
-interval_size = 250
-'''
+models = 9
+batches = 25
+batch_size = 20000
+interval_size = 5000
 
+'''
 dataset = 'GameOfLife'
 steps = 3
 models = 1
 batches = 25
 batch_size = 20000
 interval_size = 5000
-
+'''
 path = 'output'
 
 
@@ -66,7 +66,8 @@ def get_reward(spmn):
 	complete_sequence = sequence_for_policy.reset()
 	#print(complete_sequence)
 	total_reward = 0
-	actions = [[2.0], [9.0], [5.0]]
+	actions = [[3.0], [3.0], [4.0], [4.0], [1.0, 2.0, 3.0, 4.0]]
+
 	for i in range(steps):
 		#output = best_next_decision(spmn, complete_sequence)
 		action = int(random.choice(actions[i]))#int(output[0][0])
@@ -127,7 +128,7 @@ def cb_train():
 	all_reward_dev = []
 
 
-	for model in range(models):
+	for model in range(models-1, models):
 		'''
 		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
 		spmn = pickle.load(file)
