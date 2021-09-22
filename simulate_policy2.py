@@ -34,22 +34,22 @@ batches = 5
 batch_size = 500
 interval_size = 250
 '''
-
+'''
 dataset = 'CrossingTraffic'
 steps = 5
 models = 1
 batches = 1
 batch_size = 1
 interval_size = 1
-
 '''
+
 dataset = 'GameOfLife'
 steps = 3
 models = 1
 batches = 1
 batch_size = 1
 interval_size = 1
-'''
+
 path = 'output'
 
 
@@ -87,8 +87,10 @@ def get_policy(spmn):
 	total_reward = 0
 	policy = []
 	for i in range(steps):
+		#possible, output = best_next_decision(spmn, complete_sequence)
 		output = best_next_decision(spmn, complete_sequence)
 		action = int(output[0][0])
+		#policy.append(possible)
 		policy.append(action)
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
@@ -130,7 +132,7 @@ def cb_train():
 		file = open(f"models/{dataset}/spmn_original.pkle","rb")
 		spmn = pickle.load(file)
 		file.close()
-		print(f'Model {model+1}')
+		print(f'\nModel {model+1}')
 
 
 		
@@ -138,11 +140,13 @@ def cb_train():
 		print(policy)
 
 		policies.append(policy)
+		
 		#Save the reward stats
-		f = open(f"{path}/{dataset}/policies_learnspmn.txt", "a")
+		f = open(f"{path}/{dataset}/policies_original.txt", "a")
 		f.write(f"\n\nModel: {model+1}")
 		f.write(f"\n\tPolicy : {policy}")
 		f.close()
+		
 
 		
 		#Plot the reward

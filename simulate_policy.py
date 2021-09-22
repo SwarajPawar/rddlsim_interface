@@ -36,7 +36,7 @@ interval_size = 250
 
 dataset = 'CrossingTraffic'
 steps = 5
-models = 11
+models = 1
 batches = 5
 batch_size = 500
 interval_size = 250
@@ -123,8 +123,8 @@ def cb_train():
 	#optimal_meu = get_optimal_meu(dataset)
 	#random_policy_reward = get_random_policy_reward(dataset)
 
-	all_avg_rewards = []
-	all_reward_dev = []
+	all_avg_rewards = [-5.0]
+	all_reward_dev = [0.0]
 
 
 	for model in range(models):
