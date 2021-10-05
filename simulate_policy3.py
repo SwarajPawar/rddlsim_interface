@@ -19,36 +19,44 @@ global env
 '''
 dataset = 'Elevators'
 steps = 6
-models = 11
-batches = 10
-batch_size = 1000
-interval_size = 250
+models = 7
+batches = 25
+batch_size = 20000
+interval_size = 5000
 '''
-
 '''
 dataset = 'Navigation'
 steps = 5
-models = 11
-batches = 5
-batch_size = 500
-interval_size = 250
+models = 3
+batches = 25
+batch_size = 20000
+interval_size = 5000
 '''
-
+'''
 dataset = 'CrossingTraffic'
 steps = 5
-models = 9
+models = 11
+batches = 25
+batch_size = 20000
+interval_size = 5000
+'''
+
+dataset = 'GameOfLife'
+steps = 3
+models = 18
 batches = 25
 batch_size = 20000
 interval_size = 5000
 
 '''
-dataset = 'GameOfLife'
-steps = 3
-models = 1
+dataset = 'SkillTeaching'
+steps = 5
+models = 11
 batches = 25
 batch_size = 20000
 interval_size = 5000
 '''
+
 path = 'output'
 
 
@@ -66,11 +74,31 @@ def get_reward(spmn):
 	complete_sequence = sequence_for_policy.reset()
 	#print(complete_sequence)
 	total_reward = 0
-	actions = [[3.0], [3.0], [4.0], [4.0], [1.0, 2.0, 3.0, 4.0]]
+	actions = [
+			[[1.0, 3.0, 5.0, 7.0, 9.0], [2.0, 4.0, 6.0, 8.0], [1.0, 3.0, 5.0, 7.0, 9.0]],
+			[[2.0, 5.0, 8.0], [2.0, 5.0, 8.0], [1.0, 4.0, 7.0]],
+			[[1.0, 5.0, 9.0], [1.0, 5.0, 9.0], [1.0, 5.0, 9.0]],
+			[[2.0, 6.0], [1.0, 5.0, 9.0], [4.0]],
+			[[3.0, 8.0], [8.0], [6.0]],
+			[[2.0, 8.0], [2.0, 8.0], [6.0]],
+			[[2.0, 9.0], [7.0], [2.0, 9.0]],
+			[[2.0], [9.0], [1.0, 9.0]],
+			[[2.0], [8.0], [8.0]],
+			[[2.0], [9.0], [9.0]],
+			[[2.0], [9.0], [9.0]],
+			[[2.0], [9.0], [9.0]],
+			[[2.0], [9.0], [9.0]],
+			[[2.0], [9.0], [9.0]],
+			[[2.0], [9.0], [9.0]],
+			[[2.0], [9.0], [9.0]],
+			[[2.0], [9.0], [9.0]],
+			[[2.0], [9.0], [9.0]],
+			]
 
 	for i in range(steps):
 		#output = best_next_decision(spmn, complete_sequence)
-		action = int(random.choice(actions[i]))#int(output[0][0])
+		action = int(random.choice(actions[spmn][i]))#int(output[0][0])
+		#action = int(random.randint(1,4))
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)
@@ -128,7 +156,7 @@ def cb_train():
 	all_reward_dev = []
 
 
-	for model in range(models-1, models):
+	for model in range(models):
 		'''
 		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
 		spmn = pickle.load(file)
@@ -149,7 +177,7 @@ def cb_train():
 			for y in range(intervals):
 				reward_slice = list()
 				#spmns = [spmn for z in range(interval_size)]
-				spmns = [z for z in range(interval_size)]
+				spmns = [model for z in range(interval_size)]
 				reward_slice = pool.map(get_reward, spmns)
 				#print(reward_slice)
 				rewards += reward_slice
@@ -167,14 +195,14 @@ def cb_train():
 		
 		print(f"\n\tAverage Reward : {avg_rewards}")
 		print(f"\tReward Deviation : {reward_dev}")
-
-		'''
+		
+		
 		#Save the reward stats
-		f = open(f"{path}/{dataset}/stats.txt", "w")
+		f = open(f"{path}/{dataset}/reward_stats_new2.txt", "w")
 		f.write(f"\n\tAverage Reward : {all_avg_rewards}")
 		f.write(f"\n\tReward Deviation : {all_reward_dev}")
 		f.close()
-		'''
+		
 		#Plot the reward
 		'''
 		plt.close()

@@ -21,31 +21,39 @@ global env
 dataset = 'Elevators'
 steps = 6
 models = 11
-batches = 10
-batch_size = 1000
-interval_size = 250
+batches = 1
+batch_size = 1
+interval_size = 1
 '''
 
 '''
 dataset = 'Navigation'
 steps = 5
 models = 11
-batches = 5
-batch_size = 500
-interval_size = 250
+batches = 1
+batch_size = 1
+interval_size = 1
 '''
-
+'''
 dataset = 'CrossingTraffic'
 steps = 5
+models = 11
+batches = 1
+batch_size = 1
+interval_size = 1
+'''
+
+dataset = 'GameOfLife'
+steps = 3
 models = 9
 batches = 1
 batch_size = 1
 interval_size = 1
 
 '''
-dataset = 'GameOfLife'
-steps = 3
-models = 1
+dataset = 'SkillTeaching'
+steps = 5
+models = 11
 batches = 1
 batch_size = 1
 interval_size = 1
@@ -129,7 +137,7 @@ def cb_train():
 	
 
 	policies = []
-	for model in range(models):
+	for model in range(models-1, models):
 		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
 		spmn = pickle.load(file)
 		file.close()
@@ -143,7 +151,7 @@ def cb_train():
 		policies.append(policy)
 		
 		#Save the reward stats
-		f = open(f"{path}/{dataset}/policies.txt", "a")
+		f = open(f"{path}/{dataset}/policies_new.txt", "a")
 		f.write(f"\n\nModel: {model+1}")
 		f.write(f"\n\tPolicy : {policy}")
 		f.close()

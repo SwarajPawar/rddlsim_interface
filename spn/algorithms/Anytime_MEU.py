@@ -58,6 +58,7 @@ def meu_max(node, meu_per_node, data=None, lls_per_node=None, rand_gen=None):
 	
 		dec_value = np.select([np.isnan(decision_value_given), True],
 							  [max_value, decision_value_given]).astype(int)
+
 		for idx, dec_value_group in enumerate(list(node.dec_values)):
 			if dec_value in dec_value_group:
 				dec_idx = idx
@@ -234,15 +235,50 @@ def best_next_decision(root, input_data, in_place=False):
 	nodes = get_nodes_by_type(root)
 	dec_dict = {}
 	# find all possible decision values
+	all_dict = dict()
 	for node in nodes:
 		if type(node) == Max:
+			all_vals = list()
+			for dec_value in node.dec_values:
+				all_vals += dec_value
+			if node.dec_idx in all_dict:
+				all_dict[node.dec_idx] = list(set(all_dict[node.dec_idx] + all_vals))
+			else:
+				all_dict[node.dec_idx] = all_vals
+
+
+	total_val = 0
+	for node in nodes:
+		if type(node) == Max:
+			
 			dec_vals = list()
 			for dec_value in node.dec_values:
 				dec_vals += dec_value
+			
 			if node.dec_idx in dec_dict:
-				dec_dict[node.dec_idx] = dec_dict[node.dec_idx].union(set(dec_vals))
+				if len(dec_vals) > total_val:
+					dec_dict[node.dec_idx] = list(node.dec_values)
+				'''
+				else:
+					for dec_val in (node.dec_values):
+						if dec_val not in dec_dict[node.dec_idx]:
+							dec_dict[node.dec_idx].append(dec_val)
+				'''
 			else:
-				dec_dict[node.dec_idx] = set(dec_vals)
+				dec_dict[node.dec_idx] = list(node.dec_values)
+				total_val = len(dec_vals)
+
+	for dec_idx in dec_dict.keys():
+		dec_vals = list()
+		for dec_value in dec_dict[dec_idx]:
+			dec_vals += dec_value
+		rem_vals = list(set(all_dict[dec_idx]) - set(dec_vals))
+		for val in rem_vals:
+			dec_dict[dec_idx].append([val])
+			
+	print(dec_dict)
+
+
 	next_dec_idx = None
 	# find next undefined decision
 	for idx in dec_dict.keys():
@@ -253,19 +289,20 @@ def best_next_decision(root, input_data, in_place=False):
 	assert next_dec_idx is not None, "please assign all values of next decision to np.nan"
 	# determine best decisions based on meu
 	dec_vals = list(dec_dict[next_dec_idx])
-	possible_decisions = [dec_vals[0]]
-	cur_decisions = np.full((1,data.shape[0]), dec_vals[0])
+	possible_decisions = dec_vals[0]
+	#cur_decisions = np.full((1,data.shape[0]), random.choice(dec_vals[0]))
+	cur_decisions = np.full((1,data.shape[0]), dec_vals[0][1])
 	data[:,next_dec_idx] = cur_decisions
 	meu_best = meu(root, data)
 	for i in range(1, len(dec_vals)):
-		decisions_i = np.full((1,data.shape[0]), dec_vals[i])
+		decisions_i = np.full((1,data.shape[0]), random.choice(dec_vals[i]))
 		data[:,next_dec_idx] = decisions_i
 		meu_i = meu(root, data)
 		if meu_i[0] > meu_best[0]:
 			meu_best = meu_i
-			possible_decisions = [dec_vals[i]]
+			possible_decisions = dec_vals[i]
 		elif meu_i[0] == meu_best[0]:
-			possible_decisions.append(dec_vals[i]) 
+			possible_decisions += dec_vals[i] 
 	best_decision = np.full((1,data.shape[0]), random.choice(possible_decisions))
 	return possible_decisions, best_decision
 

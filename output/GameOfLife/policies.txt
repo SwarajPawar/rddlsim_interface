@@ -1,28 +1,4 @@
 
-Model: 1
-	Policy : [5, 6, 8]
-
-Model: 2
-	Policy : [8, 7, 6]
-
-Model: 3
-	Policy : [9, 2, 2]
-
-Model: 4
-	Policy : [2, 2, 2]
-
-Model: 5
-	Policy : [8, 2, 2]
-
-
-Model: 6
-	Policy : [8, 6, 6]
-
-Model: 1
-	Policy : [3, 6, 2]
-
-Model: 2
-	Policy : [5, 1, 2]
 
 Model: 1
 	Policy : [[1.0, 3.0, 5.0, 7.0, 9.0], [2.0, 4.0, 6.0, 8.0], [1.0, 3.0, 5.0, 7.0, 9.0]]
