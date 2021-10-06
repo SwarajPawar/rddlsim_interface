@@ -228,13 +228,17 @@ def eval_spmn_top_down_meu(root, eval_functions,
 
 
 def best_next_decision(root, input_data, in_place=False):
+
 	if in_place:
 		data = input_data
 	else:
 		data = np.copy(input_data)
+
+	#Get all nodes
 	nodes = get_nodes_by_type(root)
 	dec_dict = {}
-	# find all possible decision values
+
+	#Find all possible decision values
 	all_dict = dict()
 	for node in nodes:
 		if type(node) == Max:
@@ -246,7 +250,7 @@ def best_next_decision(root, input_data, in_place=False):
 			else:
 				all_dict[node.dec_idx] = all_vals
 
-
+	#Get maximum possible decision value groups for the decision variables
 	total_val = 0
 	for node in nodes:
 		if type(node) == Max:
@@ -268,6 +272,7 @@ def best_next_decision(root, input_data, in_place=False):
 				dec_dict[node.dec_idx] = list(node.dec_values)
 				total_val = len(dec_vals)
 
+	#Include the missing decision values
 	for dec_idx in dec_dict.keys():
 		dec_vals = list()
 		for dec_value in dec_dict[dec_idx]:
@@ -276,11 +281,10 @@ def best_next_decision(root, input_data, in_place=False):
 		for val in rem_vals:
 			dec_dict[dec_idx].append([val])
 			
-	print(dec_dict)
 
 
 	next_dec_idx = None
-	# find next undefined decision
+	#Find next undefined decision
 	for idx in dec_dict.keys():
 		if np.all(np.isnan(data[:, idx])):
 			next_dec_idx = idx
@@ -289,11 +293,16 @@ def best_next_decision(root, input_data, in_place=False):
 	assert next_dec_idx is not None, "please assign all values of next decision to np.nan"
 	# determine best decisions based on meu
 	dec_vals = list(dec_dict[next_dec_idx])
+	#Initialize a list for all possible decisions
 	possible_decisions = dec_vals[0]
-	#cur_decisions = np.full((1,data.shape[0]), random.choice(dec_vals[0]))
-	cur_decisions = np.full((1,data.shape[0]), dec_vals[0][1])
+
+	#Choose a decision randomly from the group
+	cur_decisions = np.full((1,data.shape[0]), random.choice(dec_vals[0]))
 	data[:,next_dec_idx] = cur_decisions
+	#Get its MEU
 	meu_best = meu(root, data)
+
+	#Compare the EUs with other groups and get the one with maximum
 	for i in range(1, len(dec_vals)):
 		decisions_i = np.full((1,data.shape[0]), random.choice(dec_vals[i]))
 		data[:,next_dec_idx] = decisions_i
@@ -303,6 +312,8 @@ def best_next_decision(root, input_data, in_place=False):
 			possible_decisions = dec_vals[i]
 		elif meu_i[0] == meu_best[0]:
 			possible_decisions += dec_vals[i] 
+
+	#Select a decision randomly from the possible values
 	best_decision = np.full((1,data.shape[0]), random.choice(possible_decisions))
 	return possible_decisions, best_decision
 

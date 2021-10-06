@@ -149,13 +149,13 @@ def cb_train():
 		print(policy)
 
 		policies.append(policy)
-		
+		'''
 		#Save the reward stats
 		f = open(f"{path}/{dataset}/policies_new.txt", "a")
 		f.write(f"\n\nModel: {model+1}")
 		f.write(f"\n\tPolicy : {policy}")
 		f.close()
-		
+		'''
 
 		
 		#Plot the reward
