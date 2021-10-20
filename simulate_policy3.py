@@ -19,7 +19,7 @@ global env
 '''
 dataset = 'Elevators'
 steps = 6
-models = 7
+models = 11
 batches = 25
 batch_size = 20000
 interval_size = 5000
@@ -27,7 +27,7 @@ interval_size = 5000
 '''
 dataset = 'Navigation'
 steps = 5
-models = 3
+models = 11
 batches = 25
 batch_size = 20000
 interval_size = 5000
@@ -40,22 +40,22 @@ batches = 25
 batch_size = 20000
 interval_size = 5000
 '''
-
+'''
 dataset = 'GameOfLife'
 steps = 3
 models = 18
 batches = 25
 batch_size = 20000
 interval_size = 5000
-
 '''
+
 dataset = 'SkillTeaching'
 steps = 5
 models = 11
 batches = 25
 batch_size = 20000
 interval_size = 5000
-'''
+
 
 path = 'output'
 
@@ -75,24 +75,17 @@ def get_reward(spmn):
 	#print(complete_sequence)
 	total_reward = 0
 	actions = [
-			[[1.0, 3.0, 5.0, 7.0, 9.0], [2.0, 4.0, 6.0, 8.0], [1.0, 3.0, 5.0, 7.0, 9.0]],
-			[[2.0, 5.0, 8.0], [2.0, 5.0, 8.0], [1.0, 4.0, 7.0]],
-			[[1.0, 5.0, 9.0], [1.0, 5.0, 9.0], [1.0, 5.0, 9.0]],
-			[[2.0, 6.0], [1.0, 5.0, 9.0], [4.0]],
-			[[3.0, 8.0], [8.0], [6.0]],
-			[[2.0, 8.0], [2.0, 8.0], [6.0]],
-			[[2.0, 9.0], [7.0], [2.0, 9.0]],
-			[[2.0], [9.0], [1.0, 9.0]],
-			[[2.0], [8.0], [8.0]],
-			[[2.0], [9.0], [9.0]],
-			[[2.0], [9.0], [9.0]],
-			[[2.0], [9.0], [9.0]],
-			[[2.0], [9.0], [9.0]],
-			[[2.0], [9.0], [9.0]],
-			[[2.0], [9.0], [9.0]],
-			[[2.0], [9.0], [9.0]],
-			[[2.0], [9.0], [9.0]],
-			[[2.0], [9.0], [9.0]],
+			[[2.0, 4.0], [2.0, 4.0], [2.0, 4.0], [2.0, 4.0], [2.0, 4.0]],
+			[[1.0, 3.0], [1.0, 3.0], [2.0, 4.0], [1.0, 3.0], [2.0, 4.0]],
+			[[2.0], [2.0], [3.0], [1.0, 4.0, 2.0, 3.0], [1.0, 4.0, 2.0, 3.0]],
+			[[2.0], [2.0], [3.0], [1.0, 4.0, 2.0, 3.0], [1.0, 4.0, 2.0, 3.0]],
+			[[2.0], [2.0], [3.0], [1.0, 4.0, 2.0, 3.0], [1.0, 4.0, 2.0, 3.0]],
+			[[2.0], [2.0], [3.0], [1.0, 4.0, 2.0, 3.0], [1.0, 4.0, 2.0, 3.0]],
+			[[1.0], [1.0, 2.0, 3.0, 4.0], [2.0], [1.0, 2.0, 3.0, 4.0], [1.0, 2.0, 3.0, 4.0]],
+			[[1.0], [1.0, 2.0, 3.0, 4.0], [2.0], [1.0, 2.0, 3.0, 4.0], [1.0, 2.0, 3.0, 4.0]],
+			[[1.0], [1.0, 2.0, 3.0, 4.0], [2.0], [1.0, 2.0, 3.0, 4.0], [1.0, 2.0, 3.0, 4.0]],
+			[[1.0], [1.0, 2.0, 3.0, 4.0], [2.0], [1.0, 2.0, 3.0, 4.0], [1.0, 2.0, 3.0, 4.0]],
+			[[1.0], [1.0, 2.0, 3.0, 4.0], [2.0], [1.0, 2.0, 3.0, 4.0], [1.0, 2.0, 3.0, 4.0]],
 			]
 
 	for i in range(steps):
@@ -167,6 +160,7 @@ def cb_train():
 		#Initialize parameters for computing rewards
 		total_reward = 0
 		reward_batch = list()
+		reward_batches = list()
 
 		pool = multiprocessing.Pool()
 
@@ -181,6 +175,7 @@ def cb_train():
 				reward_slice = pool.map(get_reward, spmns)
 				#print(reward_slice)
 				rewards += reward_slice
+				reward_batches.append(rewards)
 				printProgressBar(x*intervals + y+1, batches*intervals, prefix = f'Average Reward Evaluation :', suffix = 'Complete', length = 50)
 			reward_batch.append(sum(rewards) / batch_size)
 			
@@ -201,6 +196,11 @@ def cb_train():
 		f = open(f"{path}/{dataset}/reward_stats_new2.txt", "w")
 		f.write(f"\n\tAverage Reward : {all_avg_rewards}")
 		f.write(f"\n\tReward Deviation : {all_reward_dev}")
+		f.close()
+
+		f = open(f"{path}/{dataset}/rewards_model_{model+1}.txt", "w")
+		f.write(f"\n\n\tRewards : \n{reward_batches}")
+		f.write(f"\n\n\tBatch Averages : \n{reward_batch}")
 		f.close()
 		
 		#Plot the reward
