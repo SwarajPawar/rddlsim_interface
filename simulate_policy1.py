@@ -20,9 +20,9 @@ global env
 dataset = 'Elevators'
 steps = 6
 models = 1
-batches = 10
-batch_size = 1000
-interval_size = 250
+batches = 25
+batch_size = 20000
+interval_size = 5000
 '''
 
 dataset = 'CrossingTraffic'
@@ -34,9 +34,9 @@ interval_size = 5000
 '''
 dataset = 'Navigation'
 steps = 5
-batches = 10
-batch_size = 1000
-interval_size = 250
+batches = 25
+batch_size = 20000
+interval_size = 5000
 '''
 '''
 dataset = 'GameOfLife'

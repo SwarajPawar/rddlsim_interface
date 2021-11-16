@@ -123,8 +123,8 @@ def cb_train():
 	#optimal_meu = get_optimal_meu(dataset)
 	#random_policy_reward = get_random_policy_reward(dataset)
 
-	all_avg_rewards = [-5.0]
-	all_reward_dev = [0.0]
+	all_avg_rewards = []
+	all_reward_dev = []
 
 
 	for model in range(models):
@@ -172,28 +172,6 @@ def cb_train():
 		f.write(f"\n\tReward Deviation : {all_reward_dev}")
 		f.close()
 		
-		#Plot the reward
-		'''
-		plt.close()
-
-		rand_reward = np.array([random_policy_reward["reward"]]*len(all_avg_rewards))
-		dev = np.array([random_policy_reward["dev"]]*len(all_avg_rewards))
-		plt.fill_between(np.arange(len(all_avg_rewards)), rand_reward-dev, rand_reward+dev, alpha=0.1, color="lightgrey")
-		plt.plot(rand_reward, linestyle="dashed", color ="grey", label="Random Policy")
-
-		
-		#original_reward = np.array([original_stats["reward"]]*len(all_avg_rewards))
-		#dev = np.array([original_stats["dev"]]*len(all_avg_rewards))
-		#plt.fill_between(np.arange(len(all_avg_rewards)), original_reward-dev, original_reward+dev, alpha=0.3, color="red")
-		plt.plot([optimal_meu]*len(all_avg_rewards), linewidth=3, color ="lime", label="Optimal MEU")
-		#plt.plot(original_reward, linestyle="dashed", color ="red", label="LearnSPMN")
-		
-		plt.errorbar(np.arange(len(all_avg_rewards)), all_avg_rewards, yerr=all_reward_dev, marker="o", label="Anytime")
-		plt.title(f"{dataset} Average Rewards")
-		plt.legend()
-		plt.savefig(f"{path}/{dataset}/rewards.png", dpi=100)
-		plt.close()
-		'''
 	
 
 

@@ -226,7 +226,7 @@ def eval_spmn_top_down_meu(root, eval_functions,
 
 	return all_results[root], all_decisions, all_max_nodes
 
-
+'''
 def best_next_decision(root, input_data, in_place=False):
 
 	if in_place:
@@ -262,12 +262,11 @@ def best_next_decision(root, input_data, in_place=False):
 			if node.dec_idx in dec_dict:
 				if len(dec_vals) > total_val:
 					dec_dict[node.dec_idx] = list(node.dec_values)
-				'''
-				else:
-					for dec_val in (node.dec_values):
-						if dec_val not in dec_dict[node.dec_idx]:
-							dec_dict[node.dec_idx].append(dec_val)
-				'''
+				#else:
+				
+				#	for dec_val in (node.dec_values):
+				#		if dec_val not in dec_dict[node.dec_idx]:
+				#			dec_dict[node.dec_idx].append(dec_val)
 			else:
 				dec_dict[node.dec_idx] = list(node.dec_values)
 				total_val = len(dec_vals)
@@ -316,4 +315,88 @@ def best_next_decision(root, input_data, in_place=False):
 	#Select a decision randomly from the possible values
 	best_decision = np.full((1,data.shape[0]), random.choice(possible_decisions))
 	return possible_decisions, best_decision
+'''
 
+
+def best_next_decision(root, input_data, in_place=False):
+
+	# Function to check if the groupings are same
+	def same_groupings(grouping1, grouping2):
+		grouping1 = [set(x) for x in grouping1]
+		grouping2 = [set(x) for x in grouping2]
+
+		if len(grouping1) != len(grouping2):
+			return False
+
+		for x in grouping2:
+			if x not in grouping1:
+				return False
+
+		return True
+
+	if in_place:
+		data = input_data
+	else:
+		data = np.copy(input_data)
+
+	#Get all nodes
+	nodes = get_nodes_by_type(root)
+	dec_dict = {}
+
+
+	#Get maximum possible decision value groups for the decision variables
+	total_val = 0
+	for node in nodes:
+		if type(node) == Max:
+			
+			dec_vals = list()
+			for dec_value in node.dec_values:
+				dec_vals += dec_value
+			
+			if node.dec_idx in dec_dict:
+				if not same_groupings(dec_dict[node.dec_idx], node.dec_values):
+					all_vals = list()
+					for dec_value in dec_dict[node.dec_idx]:
+						all_vals += dec_value
+					dec_dict[node.dec_idx] = [ [x] for x in list(set(all_vals + dec_vals))]
+				
+			else:
+				dec_dict[node.dec_idx] = list(node.dec_values)
+
+	
+			
+
+
+	next_dec_idx = None
+	#Find next undefined decision
+	for idx in dec_dict.keys():
+		if np.all(np.isnan(data[:, idx])):
+			next_dec_idx = idx
+			break
+	
+	assert next_dec_idx is not None, "please assign all values of next decision to np.nan"
+	# determine best decisions based on meu
+	dec_vals = list(dec_dict[next_dec_idx])
+	#Initialize a list for all possible decisions
+	possible_decisions = dec_vals[0]
+
+	#Choose a decision randomly from the group
+	cur_decisions = np.full((1,data.shape[0]), random.choice(dec_vals[0]))
+	data[:,next_dec_idx] = cur_decisions
+	#Get its MEU
+	meu_best = meu(root, data)
+
+	#Compare the EUs with other groups and get the one with maximum
+	for i in range(1, len(dec_vals)):
+		decisions_i = np.full((1,data.shape[0]), random.choice(dec_vals[i]))
+		data[:,next_dec_idx] = decisions_i
+		meu_i = meu(root, data)
+		if meu_i[0] > meu_best[0]:
+			meu_best = meu_i
+			possible_decisions = dec_vals[i]
+		elif meu_i[0] == meu_best[0]:
+			possible_decisions += dec_vals[i] 
+
+	#Select a decision randomly from the possible values
+	best_decision = np.full((1,data.shape[0]), random.choice(possible_decisions))
+	return possible_decisions, best_decision

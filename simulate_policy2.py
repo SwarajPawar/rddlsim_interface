@@ -45,7 +45,7 @@ interval_size = 1
 
 dataset = 'GameOfLife'
 steps = 3
-models = 9
+models = 18
 batches = 1
 batch_size = 1
 interval_size = 1
@@ -72,9 +72,7 @@ def get_reward(spmn):
 
 	state = env.reset()
 	complete_sequence = sequence_for_policy.reset()
-	#print(complete_sequence)
 	total_reward = 0
-	#actions = [3,1,4,3,2,4]
 	for i in range(steps):
 		output = best_next_decision(spmn, complete_sequence)
 		action = int(output[0][0])
@@ -137,7 +135,7 @@ def cb_train():
 	
 
 	policies = []
-	for model in range(models-1, models):
+	for model in range(0, models):
 		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
 		spmn = pickle.load(file)
 		file.close()
@@ -149,37 +147,14 @@ def cb_train():
 		print(policy)
 
 		policies.append(policy)
-		'''
+		
 		#Save the reward stats
-		f = open(f"{path}/{dataset}/policies_new.txt", "a")
+		f = open(f"{path}/{dataset}/policies_new1.txt", "a")
 		f.write(f"\n\nModel: {model+1}")
 		f.write(f"\n\tPolicy : {policy}")
 		f.close()
-		'''
-
 		
-		#Plot the reward
-		'''
-		plt.close()
 
-		rand_reward = np.array([random_policy_reward["reward"]]*len(all_avg_rewards))
-		dev = np.array([random_policy_reward["dev"]]*len(all_avg_rewards))
-		plt.fill_between(np.arange(len(all_avg_rewards)), rand_reward-dev, rand_reward+dev, alpha=0.1, color="lightgrey")
-		plt.plot(rand_reward, linestyle="dashed", color ="grey", label="Random Policy")
-
-		
-		#original_reward = np.array([original_stats["reward"]]*len(all_avg_rewards))
-		#dev = np.array([original_stats["dev"]]*len(all_avg_rewards))
-		#plt.fill_between(np.arange(len(all_avg_rewards)), original_reward-dev, original_reward+dev, alpha=0.3, color="red")
-		plt.plot([optimal_meu]*len(all_avg_rewards), linewidth=3, color ="lime", label="Optimal MEU")
-		#plt.plot(original_reward, linestyle="dashed", color ="red", label="LearnSPMN")
-		
-		plt.errorbar(np.arange(len(all_avg_rewards)), all_avg_rewards, yerr=all_reward_dev, marker="o", label="Anytime")
-		plt.title(f"{dataset} Average Rewards")
-		plt.legend()
-		plt.savefig(f"{path}/{dataset}/rewards.png", dpi=100)
-		plt.close()
-		'''
 	
 
 
