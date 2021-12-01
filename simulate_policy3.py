@@ -16,46 +16,40 @@ import sys, os
 global env
 
 
+
+# For evaluating policies for rewards
+
+
 '''
 dataset = 'Elevators'
 steps = 6
 models = 11
-batches = 25
-batch_size = 20000
-interval_size = 5000
 '''
 '''
 dataset = 'Navigation'
 steps = 5
 models = 11
-batches = 25
-batch_size = 20000
-interval_size = 5000
 '''
 '''
 dataset = 'CrossingTraffic'
 steps = 5
 models = 11
-batches = 25
-batch_size = 20000
-interval_size = 5000
 '''
 
 dataset = 'GameOfLife'
 steps = 3
 models = 18
-batches = 25
-batch_size = 20000
-interval_size = 5000
 
 '''
 dataset = 'SkillTeaching'
 steps = 5
 models = 11
+'''
 batches = 25
 batch_size = 20000
 interval_size = 5000
-'''
+
+
 
 path = 'output1'
 
@@ -74,6 +68,8 @@ def get_reward(spmn):
 	complete_sequence = sequence_for_policy.reset()
 	#print(complete_sequence)
 	total_reward = 0
+
+	#Use the policy
 	actions = [
 			[[1.0, 3.0, 5.0, 7.0, 9.0], [2.0, 4.0, 6.0, 8.0], [1.0, 3.0, 5.0, 7.0, 9.0]],
 			[[2.0, 5.0, 8.0], [2.0, 5.0, 8.0], [1.0, 4.0, 7.0]],
@@ -146,22 +142,12 @@ def cb_train():
 
 	
 
-	#Get Baseline stats
-	#original_stats = get_original_stats(dataset)
-	
-	#optimal_meu = get_optimal_meu(dataset)
-	#random_policy_reward = get_random_policy_reward(dataset)
-
 	all_avg_rewards = []
 	all_reward_dev = []
 
 
 	for model in range(models):
-		'''
-		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
-		spmn = pickle.load(file)
-		file.close()
-		'''
+
 		print(f"\n\nModel {model+1}")
 
 		#Initialize parameters for computing rewards
@@ -177,10 +163,8 @@ def cb_train():
 			rewards = list()
 			for y in range(intervals):
 				reward_slice = list()
-				#spmns = [spmn for z in range(interval_size)]
 				spmns = [model for z in range(interval_size)]
 				reward_slice = pool.map(get_reward, spmns)
-				#print(reward_slice)
 				rewards += reward_slice
 				reward_batches.append(rewards)
 				printProgressBar(x*intervals + y+1, batches*intervals, prefix = f'Average Reward Evaluation :', suffix = 'Complete', length = 50)
@@ -200,7 +184,7 @@ def cb_train():
 		
 		
 		#Save the reward stats
-		f = open(f"{path}/{dataset}/reward_stats_new2.txt", "w")
+		f = open(f"{path}/{dataset}/reward_stats.txt", "w")
 		f.write(f"\n\tAverage Reward : {all_avg_rewards}")
 		f.write(f"\n\tReward Deviation : {all_reward_dev}")
 		f.close()
@@ -210,28 +194,6 @@ def cb_train():
 		f.write(f"\n\n\tBatch Averages : \n{reward_batch}")
 		f.close()
 		
-		#Plot the reward
-		'''
-		plt.close()
-
-		rand_reward = np.array([random_policy_reward["reward"]]*len(all_avg_rewards))
-		dev = np.array([random_policy_reward["dev"]]*len(all_avg_rewards))
-		plt.fill_between(np.arange(len(all_avg_rewards)), rand_reward-dev, rand_reward+dev, alpha=0.1, color="lightgrey")
-		plt.plot(rand_reward, linestyle="dashed", color ="grey", label="Random Policy")
-
-		
-		#original_reward = np.array([original_stats["reward"]]*len(all_avg_rewards))
-		#dev = np.array([original_stats["dev"]]*len(all_avg_rewards))
-		#plt.fill_between(np.arange(len(all_avg_rewards)), original_reward-dev, original_reward+dev, alpha=0.3, color="red")
-		plt.plot([optimal_meu]*len(all_avg_rewards), linewidth=3, color ="lime", label="Optimal MEU")
-		#plt.plot(original_reward, linestyle="dashed", color ="red", label="LearnSPMN")
-		
-		plt.errorbar(np.arange(len(all_avg_rewards)), all_avg_rewards, yerr=all_reward_dev, marker="o", label="Anytime")
-		plt.title(f"{dataset} Average Rewards")
-		plt.legend()
-		plt.savefig(f"{path}/{dataset}/rewards.png", dpi=100)
-		plt.close()
-		'''
 	
 
 

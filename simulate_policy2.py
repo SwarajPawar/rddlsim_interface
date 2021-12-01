@@ -18,46 +18,41 @@ global env
 
 
 '''
+For getting policy from the model
+'''
+
+
+'''
 dataset = 'Elevators'
 steps = 6
 models = 11
-batches = 1
-batch_size = 1
-interval_size = 1
 '''
 
 '''
 dataset = 'Navigation'
 steps = 5
 models = 11
-batches = 1
-batch_size = 1
-interval_size = 1
 '''
 '''
 dataset = 'CrossingTraffic'
 steps = 5
 models = 11
-batches = 1
-batch_size = 1
-interval_size = 1
 '''
 
 dataset = 'GameOfLife'
 steps = 3
 models = 18
-batches = 1
-batch_size = 1
-interval_size = 1
 
 '''
 dataset = 'SkillTeaching'
 steps = 5
 models = 11
+'''
 batches = 1
 batch_size = 1
 interval_size = 1
-'''
+
+
 path = 'output'
 
 
@@ -89,16 +84,15 @@ def get_policy(spmn):
 
 	state = env.reset()
 	complete_sequence = sequence_for_policy.reset()
-	#print(complete_sequence)
 	total_reward = 0
 	policy = []
 	for i in range(steps):
 		possible, output = best_next_decision(spmn, complete_sequence)
-		#output = best_next_decision(spmn, complete_sequence)
+		#output = best_next_decision(spmn, complete_sequence)                #For normal SPMN
 		action = int(output[0][0])
 		print(possible)
 		policy.append(possible)
-		#policy.append(action)
+		#policy.append(action)                                               #For normal SPMN
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
 		complete_sequence = sequence_for_policy.next_complete_sequence(action)
@@ -126,14 +120,6 @@ def cb_train():
 
 	
 
-	#Get Baseline stats
-	#original_stats = get_original_stats(dataset)
-	
-	#optimal_meu = get_optimal_meu(dataset)
-	#random_policy_reward = get_random_policy_reward(dataset)
-
-	
-
 	policies = []
 	for model in range(0, models):
 		file = open(f"models/{dataset}/spmn_{model+1}.pkle","rb")
@@ -142,7 +128,7 @@ def cb_train():
 		print(f'\nModel {model+1}')
 
 
-		
+		#Get policy
 		policy = get_policy(spmn)
 		print(policy)
 

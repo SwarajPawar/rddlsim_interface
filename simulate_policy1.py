@@ -17,48 +17,41 @@ global env
 
 
 '''
+For evaluating Optimal or random policy
+
+
+'''
+
+
+'''
 dataset = 'Elevators'
 steps = 6
-models = 1
-batches = 25
-batch_size = 20000
-interval_size = 5000
 '''
 
 dataset = 'CrossingTraffic'
 steps = 5
-batches = 25
-batch_size = 20000
-interval_size = 5000
 
 '''
 dataset = 'Navigation'
 steps = 5
-batches = 25
-batch_size = 20000
-interval_size = 5000
 '''
 '''
 dataset = 'GameOfLife'
 steps = 3
-batches = 25
-batch_size = 20000
-interval_size = 5000
 '''
 '''
 dataset = 'SysAdmin'
 steps = 4
-batches = 25
-batch_size = 20000
-interval_size = 5000
 '''
 '''
 dataset = 'SkillTeaching'
 steps = 5
-batches = 1
-batch_size = 500000
-interval_size = 5000
 '''
+batches = 25
+batch_size = 20000
+interval_size = 5000
+
+
 path = 'output'
 
 
@@ -74,9 +67,10 @@ def get_reward(spmn):
 	state = env.reset()
 	complete_sequence = sequence_for_policy.reset()
 	total_reward = 0
+	#Optimal policy
 	actions = [3,3,4,4,1]
 	for i in range(steps):
-		#output = best_next_decision(spmn, complete_sequence)
+		#action = random.randint(1, max_values)         #Used for random policy
 		action = actions[i]
 		state, reward, done, _ = env.doAction(action)
 		total_reward += reward
@@ -106,11 +100,6 @@ def cb_train():
 
 	
 
-	'''
-	file = open(f"models/{dataset}/spmn_original.pkle","rb")
-	spmn = pickle.load(file)
-	file.close()
-	'''
 
 	#Initialize parameters for computing rewards
 	total_reward = 0
@@ -124,7 +113,6 @@ def cb_train():
 		rewards = list()
 		for y in range(intervals):
 			reward_slice = list()
-			#spmns = [spmn for z in range(interval_size)]
 			spmns = [z for z in range(interval_size)]
 			reward_slice = pool.map(get_reward, spmns)
 			rewards += reward_slice
@@ -144,7 +132,7 @@ def cb_train():
 
 	'''
 	#Save the reward stats
-	f = open(f"{path}/{dataset}/stats_original.txt", "w")
+	f = open(f"{path}/{dataset}/stats_optimal.txt", "w")
 	f.write(f"\n\tAverage Reward : {avg_rewards}")
 	f.write(f"\n\tReward Deviation : {reward_dev}")
 	f.close()
